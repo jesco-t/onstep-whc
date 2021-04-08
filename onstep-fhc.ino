@@ -33,10 +33,55 @@
  *
  */
 
+#include <ESP8266WiFi.h>
+
+// Enable debugging messages via the serial monitor
+#define DEBUG ON
+#define DebugSer Serial
+
+#if DEBUG != OFF
+  #define D(x)       DebugSer.print(x)
+  #define DF(x)      DebugSer.print(F(x))
+  #define DL(x)      DebugSer.println(x)
+  #define DLF(x)     DebugSer.println(F(x))
+#else
+  #define D(x)
+  #define DF(x)
+  #define DL(x)
+  #define DLF(x)
+#endif
+
+// Network credentials (OnStep defaults are "ONSTEP" and "password"
+const char* ssid     = "ONSTEP";
+const char* password = "password";
 
 void setup() {
-  // put your setup code here, to run once:
 
+#if DEBUG != OFF
+  // initialize USB serial debugging early, so we can use DebugSer.print() for debugging, if needed
+  DebugSer.begin(9600); 
+  delay(5000); 
+  DebugSer.flush(); 
+  DF(""); 
+  DF(""); 
+  DL("Starting onstep-fhc...");
+#endif
+
+  // Connect to controller WiFi
+  WiFi.begin(ssid, password);             
+  DL("Connecting to "); 
+  D(ssid); DL(" ...");
+
+  int i = 0;
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    D(++i); D(' ');
+  }
+
+  DL("");
+  DL("Connection established!");  
+  D("IP address:\t");
+  DL(WiFi.localIP());                     // Send the IP address of the ESP8266 to the computer
 }
 
 void loop() {
