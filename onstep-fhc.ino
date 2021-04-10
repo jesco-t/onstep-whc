@@ -34,12 +34,13 @@
  */
 
 #include <ESP8266WiFi.h>
+#include <WiFiClient.h>
 
 // Enable debugging messages via the serial monitor
-#define DEBUG ON
+#define DEBUG
 #define DebugSer Serial
 
-#if DEBUG != OFF
+#ifdef DEBUG
   #define D(x)       DebugSer.print(x)
   #define DF(x)      DebugSer.print(F(x))
   #define DL(x)      DebugSer.println(x)
@@ -54,23 +55,26 @@
 // Network credentials (OnStep defaults are "ONSTEP" and "password"
 const char* ssid     = "ONSTEP";
 const char* password = "password";
+IPAddress onstep(192,168,0,1);
 
+// Setup routine
 void setup() {
 
-#if DEBUG != OFF
-  // initialize USB serial debugging early, so we can use DebugSer.print() for debugging, if needed
-  DebugSer.begin(9600); 
+  pinMode(D1, INPUT);
+  pinMode(D2, INPUT);
+  pinMode(D5, INPUT);
+
+#ifdef DEBUG
+  DebugSer.begin(115200); 
   delay(5000); 
-  DebugSer.flush(); 
-  DF(""); 
-  DF(""); 
-  DL("Starting onstep-fhc...");
+  DebugSer.flush();
+  DL("Starting Wireless Handcontroller...");
 #endif
 
   // Connect to controller WiFi
   WiFi.begin(ssid, password);             
   DL("Connecting to "); 
-  D(ssid); DL(" ...");
+  D(ssid); DL(" ..."); Serial.flush();
 
   int i = 0;
   while (WiFi.status() != WL_CONNECTED) {
@@ -78,13 +82,20 @@ void setup() {
     D(++i); D(' ');
   }
 
+  // light up blue on-board LED when connected (only in debug mode)
+#ifdef DEBUG
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, LOW);
+#endif
+
   DL("");
   DL("Connection established!");  
   D("IP address:\t");
-  DL(WiFi.localIP());                     // Send the IP address of the ESP8266 to the computer
+  DL(WiFi.localIP());                    // Send the IP address of the ESP8266 to the computer
 }
 
+// main program loop
 void loop() {
-  // put your main code here, to run repeatedly:
+
 
 }
