@@ -57,12 +57,58 @@ const char* ssid     = "ONSTEP";
 const char* password = "password";
 IPAddress onstep(192,168,0,1);
 
+WiFiClient cmdSvrClient;
+
+// Focuser settings
+int focus_smallstep = 10;
+int focus_largestep = 250;
+int focus_speed = focus_smallstep;
+
+// processCommand with the OnStep server
+String processCommand(String cmd){
+
+  D("Command: ");
+  D(cmd);
+  D(" - ");
+  // Connect to cmdSvr
+  if (!cmdSvrClient.connect(onstep, 9999)) {
+    DL("connection failed");
+    delay(1000);
+    return "NO_CONNECTION";
+  }
+  // Send command
+  if (cmdSvrClient.connected()) {
+    cmdSvrClient.println(cmd);
+    DL("success - ");
+  } 
+  // wait for data return to be available
+  unsigned long timeout = millis();
+  while (cmdSvrClient.available() == 0) {
+    if (millis() - timeout > 1000) {
+      DL(">>> Client Timeout !");
+      cmdSvrClient.stop();
+      delay(10000);
+      return "TIMEOUT";
+    }
+  }
+  // Read return data
+    while (cmdSvrClient.available()) {
+    char ch = static_cast<char>(cmdSvrClient.read());
+    D(ch);
+  }
+  // Close the connection
+  cmdSvrClient.stop();
+  DL();
+
+  return "SUCCESS";
+}
+
 // Setup routine
 void setup() {
 
-  pinMode(D1, INPUT);
-  pinMode(D2, INPUT);
-  pinMode(D5, INPUT);
+  pinMode(D1, INPUT); // focus in
+  pinMode(D2, INPUT); // focus out
+  pinMode(D5, INPUT); // focus speed change
 
 #ifdef DEBUG
   DebugSer.begin(115200); 
@@ -92,10 +138,24 @@ void setup() {
   DL("Connection established!");  
   D("IP address:\t");
   DL(WiFi.localIP());                    // Send the IP address of the ESP8266 to the computer
+
+  // ToDo: validate that we're talking to OnStep
+  // Check response from ":GVP#" - has to be "On-Step#" 
 }
 
 // main program loop
 void loop() {
+  // put your main code here, to run repeatedly:
+  int D1_status = digitalRead(D1);
+  int D2_status = digitalRead(D2);
+  int D5_status = digitalRead(D5);
 
+  //D("D1 Status: ");
+  //DL(D1_status);
+
+  String cmd_result;
+  cmd_result = processCommand(":GVP#");
+
+  delay(300);
 
 }
