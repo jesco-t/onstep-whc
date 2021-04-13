@@ -62,7 +62,7 @@ WiFiClient cmdSvrClient;
 // Focuser settings
 int focus_smallstep = 10;
 int focus_largestep = 250;
-int focus_speed = focus_smallstep;
+int focus_step = focus_smallstep;
 
 // processCommand with the OnStep server
 String processCommand(String cmd){
@@ -79,36 +79,39 @@ String processCommand(String cmd){
   // Send command
   if (cmdSvrClient.connected()) {
     cmdSvrClient.println(cmd);
-    DL("success - ");
+    D(cmd);
+    DL(" successfully sent - ");
   } 
   // wait for data return to be available
   unsigned long timeout = millis();
   while (cmdSvrClient.available() == 0) {
-    if (millis() - timeout > 1000) {
+    if (millis() - timeout > 100) {
       DL(">>> Client Timeout !");
       cmdSvrClient.stop();
-      delay(10000);
+      //delay(10000);
       return "TIMEOUT";
     }
   }
   // Read return data
+  String data_return = "";
     while (cmdSvrClient.available()) {
     char ch = static_cast<char>(cmdSvrClient.read());
     D(ch);
+    data_return += ch;
   }
   // Close the connection
   cmdSvrClient.stop();
   DL();
 
-  return "SUCCESS";
+  return data_return;
 }
 
 // Setup routine
 void setup() {
 
   pinMode(D1, INPUT); // focus in
-  pinMode(D2, INPUT); // focus out
-  pinMode(D5, INPUT); // focus speed change
+  pinMode(D5, INPUT); // focus out
+  pinMode(D6, INPUT); // focus speed change
 
 #ifdef DEBUG
   DebugSer.begin(115200); 
@@ -145,17 +148,80 @@ void setup() {
 
 // main program loop
 void loop() {
-  // put your main code here, to run repeatedly:
-  int D1_status = digitalRead(D1);
-  int D2_status = digitalRead(D2);
-  int D5_status = digitalRead(D5);
-
-  //D("D1 Status: ");
-  //DL(D1_status);
-
+  String cmd;
   String cmd_result;
-  cmd_result = processCommand(":GVP#");
 
-  delay(300);
+  // get start time for loop
+  unsigned long start_time = millis();
+  
+  // get status of all buttons
+  int pinUp_status = digitalRead(D1);
+  int pinDown_status = digitalRead(D5);
+  int pinSpecial_status = digitalRead(D6);
 
+  D("pinUp_status: ");
+  DL(pinUp_status);
+  D("pinDown_status: ");
+  DL(pinDown_status);
+  D("pinSpecial_status: ");
+  DL(pinSpecial_status);
+  
+  // Upper button = Move Focus Inward
+  if (pinUp_status == 1 && pinDown_status == 0 && pinSpecial_status == 0){
+    cmd = ":FR" + String(focus_step);
+    cmd = cmd + "#";
+    DL(cmd);
+    cmd_result = processCommand(cmd);
+  }
+  /*
+   * Lower button = Move Focus Outward
+   */
+  if (pinUp_status == 0 && pinDown_status == 1 && pinSpecial_status == 0){
+    cmd = "FR-" + focus_step;
+    cmd = cmd +  + "#";
+    DL(cmd);
+    cmd_result = processCommand(cmd);
+  }
+  /*
+   * Up + Special = Stepsize auf Large
+   */
+  if (pinUp_status == 1 && pinDown_status == 0 && pinSpecial_status == 1){
+    focus_step = focus_largestep;
+  }
+  /*
+   * Down + Special = Stepsize auf Small
+   */
+  if (pinUp_status == 0 && pinDown_status == 1 && pinSpecial_status == 1){
+    focus_step = focus_smallstep;
+  }
+  /*
+   * set current focuser position as new home
+   */
+  if (pinUp_status == 0 && pinDown_status == 0 && pinSpecial_status == 1){
+    delay(1000); // only issue command if button is pressed for more than one second
+    if (pinUp_status == 0 && pinDown_status == 0 && pinSpecial_status == 1){
+      cmd = ":FH#";
+      cmd_result = processCommand(cmd);
+    }
+  }
+  /*
+   * move focuser to home position
+   */
+  if (pinUp_status == 1 && pinDown_status == 1 && pinSpecial_status == 0){
+    delay(1000); // only issue command if button is pressed for more than one second
+    if (pinUp_status == 1 && pinDown_status == 1 && pinSpecial_status == 0){
+      cmd = ":Fh#";
+      cmd_result = processCommand(cmd);
+    }
+  }
+
+  // ensure constant execution time
+  unsigned long end_time = millis();
+  unsigned long run_time = end_time - start_time;
+  if ( run_time < 250) {
+    D("Loop time: ");
+    D(run_time);
+    DL("ms");
+    delay(250-run_time);
+  }
 }
