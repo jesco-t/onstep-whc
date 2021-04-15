@@ -61,7 +61,7 @@ WiFiClient cmdSvrClient;
 
 // Focuser settings
 int focus_smallstep = 10;
-int focus_largestep = 250;
+int focus_largestep = 100;
 int focus_step = focus_smallstep;
 int focus_delay = 100;
 
