@@ -63,6 +63,7 @@ WiFiClient cmdSvrClient;
 int focus_smallstep = 10;
 int focus_largestep = 250;
 int focus_step = focus_smallstep;
+int focus_delay = 100;
 
 // processCommand with the OnStep server
 String processCommand(String cmd){
@@ -83,15 +84,16 @@ String processCommand(String cmd){
     DL(" successfully sent - ");
   } 
   // wait for data return to be available
-  unsigned long timeout = millis();
+  /*unsigned long timeout = millis();
   while (cmdSvrClient.available() == 0) {
-    if (millis() - timeout > 100) {
+    if (millis() - timeout > 50) {
       DL(">>> Client Timeout !");
       cmdSvrClient.stop();
       //delay(10000);
       return "TIMEOUT";
     }
-  }
+  }*/
+  delay(10);
   // Read return data
   String data_return = "";
     while (cmdSvrClient.available()) {
@@ -155,7 +157,7 @@ void loop() {
   unsigned long start_time = millis();
   
   // get status of all buttons
-  int pinUp_status = digitalRead(D1);
+  int pinUp_status = digitalRead(D1);;
   int pinDown_status = digitalRead(D5);
   int pinSpecial_status = digitalRead(D6);
 
@@ -168,19 +170,31 @@ void loop() {
   
   // Upper button = Move Focus Inward
   if (pinUp_status == 1 && pinDown_status == 0 && pinSpecial_status == 0){
-    cmd = ":FR" + String(focus_step);
-    cmd = cmd + "#";
-    DL(cmd);
-    cmd_result = processCommand(cmd);
+    while (pinUp_status == 1 && pinDown_status == 0 && pinSpecial_status == 0){
+      cmd = ":FR" + String(focus_step);
+      cmd = cmd + "#";
+      DL(cmd);
+      cmd_result = processCommand(cmd);
+      delay(focus_delay);
+      pinUp_status = digitalRead(D1);
+      pinDown_status = digitalRead(D5);
+      pinSpecial_status = digitalRead(D6);
+    }
   }
   /*
    * Lower button = Move Focus Outward
    */
   if (pinUp_status == 0 && pinDown_status == 1 && pinSpecial_status == 0){
-    cmd = "FR-" + focus_step;
-    cmd = cmd +  + "#";
-    DL(cmd);
-    cmd_result = processCommand(cmd);
+    while (pinUp_status == 0 && pinDown_status == 1 && pinSpecial_status == 0){
+      cmd = ":FR-" + String(focus_step);
+      cmd = cmd + "#";
+      DL(cmd);
+      cmd_result = processCommand(cmd);
+      delay(focus_delay);
+      pinUp_status = digitalRead(D1);
+      pinDown_status = digitalRead(D5);
+      pinSpecial_status = digitalRead(D6);
+    }
   }
   /*
    * Up + Special = Stepsize auf Large
@@ -199,6 +213,9 @@ void loop() {
    */
   if (pinUp_status == 0 && pinDown_status == 0 && pinSpecial_status == 1){
     delay(1000); // only issue command if button is pressed for more than one second
+    pinUp_status = digitalRead(D1);
+    pinDown_status = digitalRead(D5);
+    pinSpecial_status = digitalRead(D6);
     if (pinUp_status == 0 && pinDown_status == 0 && pinSpecial_status == 1){
       cmd = ":FH#";
       cmd_result = processCommand(cmd);
@@ -209,6 +226,9 @@ void loop() {
    */
   if (pinUp_status == 1 && pinDown_status == 1 && pinSpecial_status == 0){
     delay(1000); // only issue command if button is pressed for more than one second
+    pinUp_status = digitalRead(D1);
+    pinDown_status = digitalRead(D5);
+    pinSpecial_status = digitalRead(D6);
     if (pinUp_status == 1 && pinDown_status == 1 && pinSpecial_status == 0){
       cmd = ":Fh#";
       cmd_result = processCommand(cmd);
