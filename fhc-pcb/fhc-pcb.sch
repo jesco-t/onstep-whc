@@ -27,60 +27,60 @@ $EndComp
 $Comp
 L Device:R R1
 U 1 1 6078B0D5
-P 5800 2150
-F 0 "R1" V 5593 2150 50  0000 C CNN
-F 1 "10k" V 5684 2150 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 5730 2150 50  0001 C CNN
-F 3 "~" H 5800 2150 50  0001 C CNN
-	1    5800 2150
-	0    1    1    0   
+P 3950 2300
+F 0 "R1" V 3743 2300 50  0000 C CNN
+F 1 "10k" V 3834 2300 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 3880 2300 50  0001 C CNN
+F 3 "~" H 3950 2300 50  0001 C CNN
+	1    3950 2300
+	-1   0    0    1   
 $EndComp
 $Comp
 L Device:R R2
 U 1 1 6078B527
-P 5800 2750
-F 0 "R2" V 5593 2750 50  0000 C CNN
-F 1 "10k" V 5684 2750 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 5730 2750 50  0001 C CNN
-F 3 "~" H 5800 2750 50  0001 C CNN
-	1    5800 2750
-	0    1    1    0   
+P 4150 2900
+F 0 "R2" V 3943 2900 50  0000 C CNN
+F 1 "10k" V 4034 2900 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 4080 2900 50  0001 C CNN
+F 3 "~" H 4150 2900 50  0001 C CNN
+	1    4150 2900
+	-1   0    0    1   
 $EndComp
 $Comp
 L Device:R R4
 U 1 1 6078BA67
-P 5800 3950
-F 0 "R4" V 5593 3950 50  0000 C CNN
-F 1 "10k" V 5684 3950 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 5730 3950 50  0001 C CNN
-F 3 "~" H 5800 3950 50  0001 C CNN
-	1    5800 3950
-	0    1    1    0   
+P 4500 4100
+F 0 "R4" V 4293 4100 50  0000 C CNN
+F 1 "10k" V 4384 4100 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 4430 4100 50  0001 C CNN
+F 3 "~" H 4500 4100 50  0001 C CNN
+	1    4500 4100
+	-1   0    0    1   
 $EndComp
 $Comp
 L Device:R R5
 U 1 1 6078BECD
-P 5800 4550
-F 0 "R5" V 5593 4550 50  0000 C CNN
-F 1 "10k" V 5684 4550 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 5730 4550 50  0001 C CNN
-F 3 "~" H 5800 4550 50  0001 C CNN
-	1    5800 4550
-	0    1    1    0   
+P 4700 4700
+F 0 "R5" V 4493 4700 50  0000 C CNN
+F 1 "10k" V 4584 4700 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 4630 4700 50  0001 C CNN
+F 3 "~" H 4700 4700 50  0001 C CNN
+	1    4700 4700
+	-1   0    0    1   
 $EndComp
 $Comp
 L Device:R R3
 U 1 1 6078C825
-P 5800 3350
-F 0 "R3" V 5593 3350 50  0000 C CNN
-F 1 "10k" V 5684 3350 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 5730 3350 50  0001 C CNN
-F 3 "~" H 5800 3350 50  0001 C CNN
-	1    5800 3350
-	0    1    1    0   
+P 4300 3500
+F 0 "R3" V 4093 3500 50  0000 C CNN
+F 1 "10k" V 4184 3500 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 4230 3500 50  0001 C CNN
+F 3 "~" H 4300 3500 50  0001 C CNN
+	1    4300 3500
+	-1   0    0    1   
 $EndComp
 $Comp
-L Switch:SW_Push_Dual SW3
+L Switch:SW_Push SW3
 U 1 1 6078D719
 P 5050 3350
 F 0 "SW3" H 5050 3635 50  0000 C CNN
@@ -91,139 +91,66 @@ F 3 "~" H 5050 3550 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Switch:SW_Push_Dual SW4
-U 1 1 6078E132
-P 5050 3950
-F 0 "SW4" H 5050 4235 50  0000 C CNN
-F 1 "SW_Push_Dual" H 5050 4144 50  0000 C CNN
-F 2 "Button_Switch_THT:SW_PUSH-12mm" H 5050 4150 50  0001 C CNN
-F 3 "~" H 5050 4150 50  0001 C CNN
-	1    5050 3950
-	1    0    0    -1  
-$EndComp
-$Comp
-L Switch:SW_Push_Dual SW5
+L Switch:SW_Push SW5
 U 1 1 6078E4E1
 P 5050 4550
 F 0 "SW5" H 5050 4835 50  0000 C CNN
-F 1 "SW_Push_Dual" H 5050 4744 50  0000 C CNN
+F 1 "SW_Push_Dual" H 5050 4744 50  0001 C CNN
 F 2 "Button_Switch_THT:SW_PUSH-12mm" H 5050 4750 50  0001 C CNN
 F 3 "~" H 5050 4750 50  0001 C CNN
 	1    5050 4550
 	1    0    0    -1  
 $EndComp
 $Comp
-L Switch:SW_Push_Dual SW1
+L Switch:SW_Push SW1
 U 1 1 6078E95B
 P 5050 2150
 F 0 "SW1" H 5050 2435 50  0000 C CNN
-F 1 "SW_Push_Dual" H 5050 2344 50  0000 C CNN
+F 1 "SW_Push_Dual" H 5050 2344 50  0001 C CNN
 F 2 "Button_Switch_THT:SW_PUSH-12mm" H 5050 2350 50  0001 C CNN
 F 3 "~" H 5050 2350 50  0001 C CNN
 	1    5050 2150
 	1    0    0    -1  
 $EndComp
 $Comp
-L Switch:SW_Push_Dual SW2
-U 1 1 6079063F
-P 5050 2750
-F 0 "SW2" H 5050 3035 50  0000 C CNN
-F 1 "SW_Push_Dual" H 5050 2944 50  0000 C CNN
-F 2 "Button_Switch_THT:SW_PUSH-12mm" H 5050 2950 50  0001 C CNN
-F 3 "~" H 5050 2950 50  0001 C CNN
-	1    5050 2750
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	5250 2750 5650 2750
-Wire Wire Line
-	5250 2950 5250 2750
-Connection ~ 5250 2750
-Wire Wire Line
-	5650 3350 5250 3350
-Wire Wire Line
-	5250 3350 5250 3550
-Connection ~ 5250 3350
-Wire Wire Line
-	5650 3950 5250 3950
-Wire Wire Line
-	5250 4150 5250 3950
-Connection ~ 5250 3950
-Wire Wire Line
-	5650 4550 5250 4550
-Wire Wire Line
-	5250 4550 5250 4750
-Connection ~ 5250 4550
-Wire Wire Line
-	5650 2150 5250 2150
-Wire Wire Line
-	5250 2150 5250 2350
-Connection ~ 5250 2150
-Wire Wire Line
-	5950 2150 7000 2150
-Wire Wire Line
-	7000 4550 5950 4550
-Wire Wire Line
-	7000 2150 7000 2750
-Wire Wire Line
-	5950 3950 7000 3950
-Connection ~ 7000 3950
-Wire Wire Line
-	7000 3950 7000 4550
-Wire Wire Line
-	5950 3350 7000 3350
-Connection ~ 7000 3350
-Wire Wire Line
-	7000 3350 7000 3950
-Wire Wire Line
-	5950 2750 7000 2750
-Connection ~ 7000 2750
-Wire Wire Line
-	7000 2750 7000 3350
-$Comp
 L power:GND #PWR0101
 U 1 1 607A2C94
-P 7000 5500
-F 0 "#PWR0101" H 7000 5250 50  0001 C CNN
-F 1 "GND" H 7005 5327 50  0000 C CNN
-F 2 "" H 7000 5500 50  0001 C CNN
-F 3 "" H 7000 5500 50  0001 C CNN
-	1    7000 5500
+P 4700 5100
+F 0 "#PWR0101" H 4700 4850 50  0001 C CNN
+F 1 "GND" H 4705 4927 50  0000 C CNN
+F 2 "" H 4700 5100 50  0001 C CNN
+F 3 "" H 4700 5100 50  0001 C CNN
+	1    4700 5100
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	7000 4550 7000 5100
-Connection ~ 7000 4550
 Wire Wire Line
 	2150 3350 3500 3350
 Wire Wire Line
 	3500 3350 3500 2150
 Wire Wire Line
-	3500 2150 4850 2150
+	3500 2150 3950 2150
 Wire Wire Line
 	2150 3450 3650 3450
 Wire Wire Line
 	3650 3450 3650 2750
 Wire Wire Line
-	3650 2750 4850 2750
+	3650 2750 4150 2750
 Wire Wire Line
 	2150 3750 3850 3750
 Wire Wire Line
 	3850 3750 3850 3350
 Wire Wire Line
-	3850 3350 4850 3350
+	3850 3350 4300 3350
 Wire Wire Line
 	2150 3850 3850 3850
 Wire Wire Line
 	3850 3850 3850 3950
 Wire Wire Line
-	3850 3950 4850 3950
+	3850 3950 4500 3950
 Wire Wire Line
 	2150 3950 3650 3950
 Wire Wire Line
 	3650 3950 3650 4550
-Wire Wire Line
-	3650 4550 4850 4550
 $Comp
 L power:+5V #PWR0102
 U 1 1 607A6177
@@ -236,40 +163,11 @@ F 3 "" H 1650 2350 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	4850 2350 3350 2350
-Wire Wire Line
-	4850 2950 2750 2950
-Wire Wire Line
-	2750 2950 2750 2350
-Wire Wire Line
-	4850 3550 2750 3550
-Wire Wire Line
-	2750 3550 2750 2950
-Connection ~ 2750 2950
-Wire Wire Line
-	4850 4150 2750 4150
-Wire Wire Line
-	2750 4150 2750 3550
-Connection ~ 2750 3550
-Wire Wire Line
-	4850 4750 2750 4750
-Wire Wire Line
-	2750 4750 2750 4150
-Connection ~ 2750 4150
-Wire Wire Line
 	1650 2850 1650 2550
 Wire Wire Line
 	1750 4450 1750 5100
 Wire Wire Line
-	1750 5100 7000 5100
-Connection ~ 7000 5100
-Wire Wire Line
-	7000 5100 7000 5500
-Wire Wire Line
 	1850 2850 1850 2350
-Wire Wire Line
-	1850 2350 2750 2350
-Connection ~ 2750 2350
 $Comp
 L Device:LED D2
 U 1 1 607B1746
@@ -329,25 +227,22 @@ $EndComp
 Wire Wire Line
 	2950 1350 3350 1350
 Wire Wire Line
-	3350 1650 3350 2350
-Connection ~ 3350 2350
+	3350 1650 3350 1800
 Wire Wire Line
 	3350 2350 2950 2350
 Wire Wire Line
 	2950 2100 2950 2350
 Connection ~ 2950 2350
-Wire Wire Line
-	2950 2350 2750 2350
 $Comp
 L Connector:Screw_Terminal_01x02 J1
 U 1 1 607C8F74
-P 1200 1250
-F 0 "J1" V 1118 1062 50  0000 R CNN
-F 1 "Screw_Terminal_01x02" V 1073 1062 50  0001 R CNN
-F 2 "TerminalBlock:TerminalBlock_bornier-2_P5.08mm" H 1200 1250 50  0001 C CNN
-F 3 "~" H 1200 1250 50  0001 C CNN
-	1    1200 1250
-	0    -1   -1   0   
+P 950 1450
+F 0 "J1" V 868 1262 50  0000 R CNN
+F 1 "Screw_Terminal_01x02" V 823 1262 50  0001 R CNN
+F 2 "TerminalBlock:TerminalBlock_bornier-2_P5.08mm" H 950 1450 50  0001 C CNN
+F 3 "~" H 950 1450 50  0001 C CNN
+	1    950  1450
+	-1   0    0    1   
 $EndComp
 Wire Wire Line
 	1300 1450 1300 2550
@@ -357,8 +252,119 @@ Connection ~ 1650 2550
 Wire Wire Line
 	1650 2550 1650 2350
 Wire Wire Line
-	1200 1450 1200 5100
-Wire Wire Line
 	1200 5100 1750 5100
 Connection ~ 1750 5100
+Wire Wire Line
+	4850 4150 4850 3950
+Wire Wire Line
+	4850 3550 4850 3350
+Connection ~ 4850 3350
+Wire Wire Line
+	4850 2950 4850 2750
+Wire Wire Line
+	4850 2350 4850 2150
+Connection ~ 4850 2150
+Wire Wire Line
+	1200 1350 1150 1350
+Wire Wire Line
+	1200 1350 1200 5100
+Wire Wire Line
+	1300 1450 1150 1450
+Connection ~ 4850 3950
+$Comp
+L Switch:SW_Push SW4
+U 1 1 6078E132
+P 5050 3950
+F 0 "SW4" H 5050 4235 50  0000 C CNN
+F 1 "SW_Push_Dual" H 5050 4144 50  0001 C CNN
+F 2 "Button_Switch_THT:SW_PUSH-12mm" H 5050 4150 50  0001 C CNN
+F 3 "~" H 5050 4150 50  0001 C CNN
+	1    5050 3950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1850 2350 2950 2350
+Connection ~ 4850 2750
+$Comp
+L Switch:SW_Push SW2
+U 1 1 6079063F
+P 5050 2750
+F 0 "SW2" H 5050 3035 50  0000 C CNN
+F 1 "SW_Push_Dual" H 5050 2944 50  0001 C CNN
+F 2 "Button_Switch_THT:SW_PUSH-12mm" H 5050 2950 50  0001 C CNN
+F 3 "~" H 5050 2950 50  0001 C CNN
+	1    5050 2750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3650 4550 4700 4550
+Connection ~ 4700 4550
+Wire Wire Line
+	4700 4550 4850 4550
+Connection ~ 4500 3950
+Wire Wire Line
+	4500 3950 4850 3950
+Connection ~ 4300 3350
+Wire Wire Line
+	4300 3350 4850 3350
+Connection ~ 4150 2750
+Wire Wire Line
+	4150 2750 4850 2750
+Connection ~ 3950 2150
+Wire Wire Line
+	3950 2150 4850 2150
+Wire Wire Line
+	4700 4850 4700 5100
+Wire Wire Line
+	4500 4250 4500 5100
+Connection ~ 4500 5100
+Wire Wire Line
+	4500 5100 4700 5100
+Wire Wire Line
+	4300 3650 4300 5100
+Connection ~ 4300 5100
+Wire Wire Line
+	4300 5100 4500 5100
+Wire Wire Line
+	4150 3050 4150 5100
+Connection ~ 4150 5100
+Wire Wire Line
+	4150 5100 4300 5100
+Wire Wire Line
+	3950 2450 3950 5100
+Wire Wire Line
+	1750 5100 3950 5100
+Connection ~ 3950 5100
+Wire Wire Line
+	3950 5100 4150 5100
+Connection ~ 4700 5100
+Wire Wire Line
+	3350 1800 5550 1800
+Wire Wire Line
+	5550 1800 5550 2150
+Wire Wire Line
+	5550 4550 5250 4550
+Connection ~ 3350 1800
+Wire Wire Line
+	3350 1800 3350 2350
+Wire Wire Line
+	5250 3950 5550 3950
+Connection ~ 5550 3950
+Wire Wire Line
+	5550 3950 5550 4550
+Wire Wire Line
+	5250 3350 5550 3350
+Connection ~ 5550 3350
+Wire Wire Line
+	5550 3350 5550 3950
+Wire Wire Line
+	5250 2750 5550 2750
+Connection ~ 5550 2750
+Wire Wire Line
+	5550 2750 5550 3350
+Wire Wire Line
+	5250 2150 5550 2150
+Connection ~ 5550 2150
+Wire Wire Line
+	5550 2150 5550 2750
 $EndSCHEMATC
