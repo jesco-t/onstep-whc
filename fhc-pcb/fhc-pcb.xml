@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="D">
+  <design>
+    <source>C:\Users\Jesco\Documents\GitHub\onstep-fhc\fhc-pcb\fhc-pcb.sch</source>
+    <date>17.04.2021 22:36:10</date>
+    <tool>Eeschema (5.1.9)-1</tool>
+    <sheet number="1" name="/" tstamps="/">
+      <title_block>
+        <title/>
+        <company/>
+        <rev/>
+        <date/>
+        <source>fhc-pcb.sch</source>
+        <comment number="1" value=""/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+      </title_block>
+    </sheet>
+  </design>
+  <components>
+    <comp ref="U1">
+      <value>WeMos_D1_mini</value>
+      <footprint>Module:WEMOS_D1_mini_light</footprint>
+      <datasheet>https://wiki.wemos.cc/products:d1:d1_mini#documentation</datasheet>
+      <libsource lib="MCU_Module" part="WeMos_D1_mini" description="32-bit microcontroller module with WiFi"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>6078852E</tstamp>
+    </comp>
+    <comp ref="R1">
+      <value>10k</value>
+      <footprint>Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>6078B0D5</tstamp>
+    </comp>
+    <comp ref="R2">
+      <value>10k</value>
+      <footprint>Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>6078B527</tstamp>
+    </comp>
+    <comp ref="R4">
+      <value>10k</value>
+      <footprint>Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>6078BA67</tstamp>
+    </comp>
+    <comp ref="R5">
+      <value>10k</value>
+      <footprint>Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>6078BECD</tstamp>
+    </comp>
+    <comp ref="R3">
+      <value>10k</value>
+      <footprint>Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>6078C825</tstamp>
+    </comp>
+    <comp ref="SW3">
+      <value>SW_Push_Dual</value>
+      <footprint>Button_Switch_THT:SW_PUSH-12mm</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Switch" part="SW_Push" description="Push button switch, generic, two pins"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>6078D719</tstamp>
+    </comp>
+    <comp ref="SW5">
+      <value>SW_Push_Dual</value>
+      <footprint>Button_Switch_THT:SW_PUSH-12mm</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Switch" part="SW_Push" description="Push button switch, generic, two pins"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>6078E4E1</tstamp>
+    </comp>
+    <comp ref="SW1">
+      <value>SW_Push_Dual</value>
+      <footprint>Button_Switch_THT:SW_PUSH-12mm</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Switch" part="SW_Push" description="Push button switch, generic, two pins"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>6078E95B</tstamp>
+    </comp>
+    <comp ref="D2">
+      <value>LED</value>
+      <footprint>LED_THT:LED_D3.0mm</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Device" part="LED" description="Light emitting diode"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>607B1746</tstamp>
+    </comp>
+    <comp ref="D1">
+      <value>LED</value>
+      <footprint>LED_THT:LED_D3.0mm</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Device" part="LED" description="Light emitting diode"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>607B2C76</tstamp>
+    </comp>
+    <comp ref="R6">
+      <value>R</value>
+      <footprint>Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>607B7269</tstamp>
+    </comp>
+    <comp ref="R7">
+      <value>R</value>
+      <footprint>Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>607B791B</tstamp>
+    </comp>
+    <comp ref="J1">
+      <value>Screw_Terminal_01x02</value>
+      <footprint>TerminalBlock:TerminalBlock_bornier-2_P5.08mm</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Connector" part="Screw_Terminal_01x02" description="Generic screw terminal, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>607C8F74</tstamp>
+    </comp>
+    <comp ref="SW4">
+      <value>SW_Push_Dual</value>
+      <footprint>Button_Switch_THT:SW_PUSH-12mm</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Switch" part="SW_Push" description="Push button switch, generic, two pins"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>6078E132</tstamp>
+    </comp>
+    <comp ref="SW2">
+      <value>SW_Push_Dual</value>
+      <footprint>Button_Switch_THT:SW_PUSH-12mm</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Switch" part="SW_Push" description="Push button switch, generic, two pins"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>6079063F</tstamp>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="Connector" part="Screw_Terminal_01x02">
+      <description>Generic screw terminal, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>TerminalBlock*:*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">Screw_Terminal_01x02</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Pin_1" type="passive"/>
+        <pin num="2" name="Pin_2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Device" part="LED">
+      <description>Light emitting diode</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>LED*</fp>
+        <fp>LED_SMD:*</fp>
+        <fp>LED_THT:*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">LED</field>
+      </fields>
+      <pins>
+        <pin num="1" name="K" type="passive"/>
+        <pin num="2" name="A" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Device" part="R">
+      <description>Resistor</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>R_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">R</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="MCU_Module" part="WeMos_D1_mini">
+      <description>32-bit microcontroller module with WiFi</description>
+      <docs>https://wiki.wemos.cc/products:d1:d1_mini#documentation</docs>
+      <footprints>
+        <fp>WEMOS*D1*mini*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">WeMos_D1_mini</field>
+        <field name="Footprint">Module:WEMOS_D1_mini_light</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~RST" type="input"/>
+        <pin num="2" name="A0" type="input"/>
+        <pin num="3" name="D0" type="BiDi"/>
+        <pin num="4" name="SCK/D5" type="BiDi"/>
+        <pin num="5" name="MISO/D6" type="BiDi"/>
+        <pin num="6" name="MOSI/D7" type="BiDi"/>
+        <pin num="7" name="CS/D8" type="BiDi"/>
+        <pin num="8" name="3V3" type="power_out"/>
+        <pin num="9" name="5V" type="power_in"/>
+        <pin num="10" name="GND" type="power_in"/>
+        <pin num="11" name="D4" type="BiDi"/>
+        <pin num="12" name="D3" type="BiDi"/>
+        <pin num="13" name="SDA/D2" type="BiDi"/>
+        <pin num="14" name="SCL/D1" type="BiDi"/>
+        <pin num="15" name="RX" type="input"/>
+        <pin num="16" name="TX" type="output"/>
+      </pins>
+    </libpart>
+    <libpart lib="Switch" part="SW_Push">
+      <description>Push button switch, generic, two pins</description>
+      <docs>~</docs>
+      <fields>
+        <field name="Reference">SW</field>
+        <field name="Value">SW_Push</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="Connector">
+      <uri>C:\Program Files\KiCad\share\kicad\library/Connector.lib</uri>
+    </library>
+    <library logical="Device">
+      <uri>C:\Program Files\KiCad\share\kicad\library/Device.lib</uri>
+    </library>
+    <library logical="MCU_Module">
+      <uri>C:\Program Files\KiCad\share\kicad\library/MCU_Module.lib</uri>
+    </library>
+    <library logical="Switch">
+      <uri>C:\Program Files\KiCad\share\kicad\library/Switch.lib</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="Net-(R1-Pad2)">
+      <node ref="R1" pin="2"/>
+      <node ref="SW1" pin="1"/>
+      <node ref="U1" pin="14"/>
+    </net>
+    <net code="2" name="Net-(U1-Pad3)">
+      <node ref="U1" pin="3"/>
+    </net>
+    <net code="3" name="GND">
+      <node ref="R2" pin="1"/>
+      <node ref="R4" pin="1"/>
+      <node ref="R5" pin="1"/>
+      <node ref="R3" pin="1"/>
+      <node ref="U1" pin="10"/>
+      <node ref="R1" pin="1"/>
+      <node ref="J1" pin="2"/>
+    </net>
+    <net code="4" name="Net-(D1-Pad1)">
+      <node ref="D1" pin="1"/>
+      <node ref="U1" pin="12"/>
+    </net>
+    <net code="5" name="Net-(R2-Pad2)">
+      <node ref="U1" pin="13"/>
+      <node ref="R2" pin="2"/>
+      <node ref="SW2" pin="1"/>
+    </net>
+    <net code="6" name="Net-(U1-Pad15)">
+      <node ref="U1" pin="15"/>
+    </net>
+    <net code="7" name="Net-(U1-Pad16)">
+      <node ref="U1" pin="16"/>
+    </net>
+    <net code="8" name="Net-(U1-Pad2)">
+      <node ref="U1" pin="2"/>
+    </net>
+    <net code="9" name="Net-(R3-Pad2)">
+      <node ref="U1" pin="4"/>
+      <node ref="R3" pin="2"/>
+      <node ref="SW3" pin="1"/>
+    </net>
+    <net code="10" name="Net-(R5-Pad2)">
+      <node ref="SW5" pin="1"/>
+      <node ref="U1" pin="6"/>
+      <node ref="R5" pin="2"/>
+    </net>
+    <net code="11" name="Net-(U1-Pad7)">
+      <node ref="U1" pin="7"/>
+    </net>
+    <net code="12" name="+5V">
+      <node ref="U1" pin="9"/>
+      <node ref="J1" pin="1"/>
+    </net>
+    <net code="13" name="Net-(D2-Pad1)">
+      <node ref="U1" pin="11"/>
+      <node ref="D2" pin="1"/>
+    </net>
+    <net code="14" name="Net-(D2-Pad2)">
+      <node ref="R7" pin="2"/>
+      <node ref="D2" pin="2"/>
+    </net>
+    <net code="15" name="Net-(R6-Pad1)">
+      <node ref="R6" pin="1"/>
+      <node ref="R7" pin="1"/>
+      <node ref="U1" pin="8"/>
+      <node ref="SW2" pin="2"/>
+      <node ref="SW3" pin="2"/>
+      <node ref="SW5" pin="2"/>
+      <node ref="SW1" pin="2"/>
+      <node ref="SW4" pin="2"/>
+    </net>
+    <net code="16" name="Net-(D1-Pad2)">
+      <node ref="R6" pin="2"/>
+      <node ref="D1" pin="2"/>
+    </net>
+    <net code="17" name="Net-(R4-Pad2)">
+      <node ref="R4" pin="2"/>
+      <node ref="SW4" pin="1"/>
+      <node ref="U1" pin="5"/>
+    </net>
+    <net code="18" name="Net-(U1-Pad1)">
+      <node ref="U1" pin="1"/>
+    </net>
+  </nets>
+</export>
