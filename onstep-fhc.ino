@@ -37,7 +37,7 @@
 #include <WiFiClient.h>
 
 // Enable debugging messages via the serial monitor
-#define DEBUG
+//#define DEBUG
 #define DebugSer Serial
 
 #ifdef DEBUG
@@ -157,8 +157,8 @@ void loop() {
   unsigned long start_time = millis();
   
   // get status of all buttons
-  int pinUp_status = digitalRead(D1);;
-  int pinDown_status = digitalRead(D5);
+  int pinUp_status = digitalRead(D5);;
+  int pinDown_status = digitalRead(D1);
   int pinSpecial_status = digitalRead(D6);
 
   D("pinUp_status: ");
@@ -176,8 +176,8 @@ void loop() {
       DL(cmd);
       cmd_result = processCommand(cmd);
       delay(focus_delay);
-      pinUp_status = digitalRead(D1);
-      pinDown_status = digitalRead(D5);
+      pinUp_status = digitalRead(D5);
+      pinDown_status = digitalRead(D1);
       pinSpecial_status = digitalRead(D6);
     }
   }
@@ -191,8 +191,8 @@ void loop() {
       DL(cmd);
       cmd_result = processCommand(cmd);
       delay(focus_delay);
-      pinUp_status = digitalRead(D1);
-      pinDown_status = digitalRead(D5);
+      pinUp_status = digitalRead(D5);
+      pinDown_status = digitalRead(D1);
       pinSpecial_status = digitalRead(D6);
     }
   }
@@ -213,8 +213,8 @@ void loop() {
    */
   if (pinUp_status == 0 && pinDown_status == 0 && pinSpecial_status == 1){
     delay(1000); // only issue command if button is pressed for more than one second
-    pinUp_status = digitalRead(D1);
-    pinDown_status = digitalRead(D5);
+    pinUp_status = digitalRead(D5);
+    pinDown_status = digitalRead(D1);
     pinSpecial_status = digitalRead(D6);
     if (pinUp_status == 0 && pinDown_status == 0 && pinSpecial_status == 1){
       cmd = ":FH#";
@@ -226,8 +226,8 @@ void loop() {
    */
   if (pinUp_status == 1 && pinDown_status == 1 && pinSpecial_status == 0){
     delay(1000); // only issue command if button is pressed for more than one second
-    pinUp_status = digitalRead(D1);
-    pinDown_status = digitalRead(D5);
+    pinUp_status = digitalRead(D5);
+    pinDown_status = digitalRead(D1);
     pinSpecial_status = digitalRead(D6);
     if (pinUp_status == 1 && pinDown_status == 1 && pinSpecial_status == 0){
       cmd = ":Fh#";
