@@ -1,6 +1,6 @@
 
 /*
- * Title       onstep-fhc
+ * Title       onstep-whc
  * by          Jesco Topp
  *
  * Copyright (C) 2021 Jesco Topp
@@ -19,9 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Description:
- *   The FHC is a handcontroller to control *only* the focuser 1 module
- *   of the OnStep telescope controller by a wireless remote based on the
- *   ESP8266 WiFi board.
+ *   This is a wireless handcontroller for the awesome OnStep telescope 
+ *   controller. Currently it only controls the focuser 1 module. It is 
+ *   based on the ESP8266 WiFi board.
  *   
  *   The software is published here in the hope that it is helpful to someone.
  *
@@ -29,15 +29,15 @@
  *   jesco.topp@gmail.com
  *
  * Revision history, and newer versions:
- *   See GitHub: https://github.com/jesco-t/onstep-fhc
+ *   See GitHub: https://github.com/jesco-t/onstep-whc
  *
  */
 
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 
-// Enable debugging messages via the serial monitor
-//#define DEBUG
+/* Enable debugging messages via the serial monitor */
+#define DEBUG
 #define DebugSer Serial
 
 #ifdef DEBUG
@@ -52,25 +52,37 @@
   #define DLF(x)
 #endif
 
-// Network credentials (OnStep defaults are "ONSTEP" and "password"
+/*
+ * Configuration
+ */
+
+/* PINMAP (PINMAP_BREADBOARD,...) */
+#define PINMAP_BREADBOARD
+
+#ifdef PINMAP_BREADBOARD
+  #define PIN_UP      D5
+  #define PIN_DOWN    D1
+  #define PIN_SPECIAL D6
+#endif
+
+/* Network credentials (OnStep defaults are "ONSTEP" and "password" */
 const char* ssid     = "ONSTEP";
 const char* password = "password";
 IPAddress onstep(192,168,0,1);
 
-WiFiClient cmdSvrClient;
-
-// Focuser settings
+/* Focuser speed settings */
 int focus_smallstep = 10;
 int focus_largestep = 100;
 int focus_step = focus_smallstep;
 int focus_delay = 100;
 
+WiFiClient cmdSvrClient;
+
 // processCommand with the OnStep server
 String processCommand(String cmd){
-
-  D("Command: ");
-  D(cmd);
-  D(" - ");
+  // Debugging output
+  D("Command: "); D(cmd); D(" - ");
+  
   // Connect to cmdSvr
   if (!cmdSvrClient.connect(onstep, 9999)) {
     DL("connection failed");
@@ -80,8 +92,7 @@ String processCommand(String cmd){
   // Send command
   if (cmdSvrClient.connected()) {
     cmdSvrClient.println(cmd);
-    D(cmd);
-    DL(" successfully sent - ");
+    D(cmd); DL(" successfully sent - ");
   } 
   // wait for data return to be available
   /*unsigned long timeout = millis();
@@ -111,9 +122,9 @@ String processCommand(String cmd){
 // Setup routine
 void setup() {
 
-  pinMode(D1, INPUT); // focus in
-  pinMode(D5, INPUT); // focus out
-  pinMode(D6, INPUT); // focus speed change
+  pinMode(PIN_UP, INPUT); // focus in
+  pinMode(PIN_DOWN, INPUT); // focus out
+  pinMode(PIN_SPECIAL, INPUT); // focus speed change
 
 #ifdef DEBUG
   DebugSer.begin(115200); 
@@ -157,9 +168,9 @@ void loop() {
   unsigned long start_time = millis();
   
   // get status of all buttons
-  int pinUp_status = digitalRead(D5);;
-  int pinDown_status = digitalRead(D1);
-  int pinSpecial_status = digitalRead(D6);
+  int pinUp_status = digitalRead(PIN_UP);;
+  int pinDown_status = digitalRead(PIN_DOWN);
+  int pinSpecial_status = digitalRead(PIN_SPECIAL);
 
   D("pinUp_status: ");
   DL(pinUp_status);
@@ -176,9 +187,9 @@ void loop() {
       DL(cmd);
       cmd_result = processCommand(cmd);
       delay(focus_delay);
-      pinUp_status = digitalRead(D5);
-      pinDown_status = digitalRead(D1);
-      pinSpecial_status = digitalRead(D6);
+      pinUp_status = digitalRead(PIN_UP);
+      pinDown_status = digitalRead(PIN_DOWN);
+      pinSpecial_status = digitalRead(PIN_SPECIAL);
     }
   }
   /*
@@ -191,9 +202,9 @@ void loop() {
       DL(cmd);
       cmd_result = processCommand(cmd);
       delay(focus_delay);
-      pinUp_status = digitalRead(D5);
-      pinDown_status = digitalRead(D1);
-      pinSpecial_status = digitalRead(D6);
+      pinUp_status = digitalRead(PIN_UP);
+      pinDown_status = digitalRead(PIN_DOWN);
+      pinSpecial_status = digitalRead(PIN_SPECIAL);
     }
   }
   /*
@@ -213,9 +224,9 @@ void loop() {
    */
   if (pinUp_status == 0 && pinDown_status == 0 && pinSpecial_status == 1){
     delay(1000); // only issue command if button is pressed for more than one second
-    pinUp_status = digitalRead(D5);
-    pinDown_status = digitalRead(D1);
-    pinSpecial_status = digitalRead(D6);
+      pinUp_status = digitalRead(PIN_UP);
+      pinDown_status = digitalRead(PIN_DOWN);
+      pinSpecial_status = digitalRead(PIN_SPECIAL);
     if (pinUp_status == 0 && pinDown_status == 0 && pinSpecial_status == 1){
       cmd = ":FH#";
       cmd_result = processCommand(cmd);
@@ -226,9 +237,9 @@ void loop() {
    */
   if (pinUp_status == 1 && pinDown_status == 1 && pinSpecial_status == 0){
     delay(1000); // only issue command if button is pressed for more than one second
-    pinUp_status = digitalRead(D5);
-    pinDown_status = digitalRead(D1);
-    pinSpecial_status = digitalRead(D6);
+      pinUp_status = digitalRead(PIN_UP);
+      pinDown_status = digitalRead(PIN_DOWN);
+      pinSpecial_status = digitalRead(PIN_SPECIAL);
     if (pinUp_status == 1 && pinDown_status == 1 && pinSpecial_status == 0){
       cmd = ":Fh#";
       cmd_result = processCommand(cmd);
