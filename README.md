@@ -1,9 +1,17 @@
-# onstep-fhc
+# Wireless Handcontroller for OnStep
 
-The FHC is a handcontroller to control *only* the 
-focuser 1 module of the OnStep telescope controller 
-by a wireless remote based on the ESP8266 WiFi board.
+This is a wireless handcontroller for the awesome OnStep telescope controller. Currently it only controls the focuser 1 module. It is based on the ESP8266 WiFi board.
 
-The software is published here in the hope that it 
-is helpful to someone.
+# Development breadboard
+
+This is a snapshot of my simples development breadboard. It only controls the focuser for now.
+
+![Simple Breadboard](/support-files/Breadboard_Focuser-only.jpg)
+
+Part list is
+* WeMos D1 Mini Pro
+* push buttons
+* 10k resistors
+* power supply board (to give 3.3V to the power rails)
+
 
