@@ -14,4 +14,23 @@ Part list is
 * 10k resistors
 * power supply board (to give 3.3V to the power rails)
 
+# What already works, and what doesn't
+
+Good
+* Focuser 1 works
+  * focus in and out
+  * speed change slow/fast
+  * set home position
+  * go to home position
+
+Bad
+* No mount control yet
+
+# Commands
+* Focus Inward = Upper Button
+* Focus Outward = Lower Button
+* Set focus speed to fast = Upper + Middle Button
+* Set focus speed to slow = Lower + Middle Button
+* Set current position as home/middlle = Middle Button for longer than 1s
+* Move focuser to home/middle position = Upper + Middle Button for longer 1s
 
