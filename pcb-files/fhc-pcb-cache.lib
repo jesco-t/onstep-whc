@@ -112,18 +112,34 @@ X 2 2 200 0 100 L 50 50 0 1 P
 ENDDRAW
 ENDDEF
 #
-# power_+5V
+# ams1117_shield_azdelivery_AMS1117_Shield_AZDelivery
 #
-DEF power_+5V #PWR 0 0 Y Y 1 F P
+DEF ams1117_shield_azdelivery_AMS1117_Shield_AZDelivery U 0 40 Y Y 1 F N
+F0 "U" 0 0 50 H V C CNN
+F1 "ams1117_shield_azdelivery_AMS1117_Shield_AZDelivery" 0 0 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+DRAW
+S -350 -200 250 -500 0 1 0 N
+X VIN 1 -450 -300 100 R 50 50 1 1 I
+X GND 2 -450 -400 100 R 50 50 1 1 I
+X GND 3 350 -400 100 L 50 50 1 1 O
+X VOUT 5 350 -300 100 L 50 50 1 1 O
+ENDDRAW
+ENDDEF
+#
+# power_+9V
+#
+DEF power_+9V #PWR 0 0 Y Y 1 F P
 F0 "#PWR" 0 -150 50 H I C CNN
-F1 "power_+5V" 0 140 50 H V C CNN
+F1 "power_+9V" 0 140 50 H V C CNN
 F2 "" 0 0 50 H I C CNN
 F3 "" 0 0 50 H I C CNN
 DRAW
 P 2 0 1 0 -30 50 0 100 N
 P 2 0 1 0 0 0 0 100 N
 P 2 0 1 0 0 100 30 50 N
-X +5V 1 0 0 0 U 50 50 1 1 W N
+X +9V 1 0 0 0 U 50 50 1 1 W N
 ENDDRAW
 ENDDEF
 #
