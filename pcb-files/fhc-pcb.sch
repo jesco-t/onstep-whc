@@ -375,7 +375,7 @@ Wire Wire Line
 Wire Wire Line
 	1250 2700 1650 2700
 $Comp
-L ams1117_shield_azdelivery:AMS1117_Shield_AZDelivery U2
+L fhc-pcb-rescue:AMS1117_Shield_AZDelivery-ams1117_shield_azdelivery U2
 U 1 1 6095DB03
 P 2850 2150
 F 0 "U2" H 2800 2115 50  0000 C CNN
@@ -385,12 +385,6 @@ F 3 "" H 2850 2150 50  0001 C CNN
 	1    2850 2150
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	1750 2700 2000 2700
-Wire Wire Line
-	2000 2700 2000 2450
-Wire Wire Line
-	2000 2450 2400 2450
 Wire Wire Line
 	3200 2450 4300 2450
 Wire Wire Line
@@ -405,4 +399,23 @@ Wire Wire Line
 	2200 2800 2200 2550
 Wire Wire Line
 	2200 2550 2400 2550
+$Comp
+L Switch:SW_Push SW7
+U 1 1 6095510F
+P 2000 2350
+F 0 "SW7" H 2000 2635 50  0000 C CNN
+F 1 "SW_Push" H 2000 2544 50  0000 C CNN
+F 2 "Personal Library:Wippschalter" H 2000 2550 50  0001 C CNN
+F 3 "~" H 2000 2550 50  0001 C CNN
+	1    2000 2350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1750 2700 1750 2350
+Wire Wire Line
+	1750 2350 1800 2350
+Wire Wire Line
+	2200 2350 2200 2450
+Wire Wire Line
+	2200 2450 2400 2450
 $EndSCHEMATC

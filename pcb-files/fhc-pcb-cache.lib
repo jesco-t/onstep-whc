@@ -112,11 +112,11 @@ X 2 2 200 0 100 L 50 50 0 1 P
 ENDDRAW
 ENDDEF
 #
-# ams1117_shield_azdelivery_AMS1117_Shield_AZDelivery
+# fhc-pcb-rescue_AMS1117_Shield_AZDelivery-ams1117_shield_azdelivery
 #
-DEF ams1117_shield_azdelivery_AMS1117_Shield_AZDelivery U 0 40 Y Y 1 F N
+DEF fhc-pcb-rescue_AMS1117_Shield_AZDelivery-ams1117_shield_azdelivery U 0 40 Y Y 1 F N
 F0 "U" 0 0 50 H V C CNN
-F1 "ams1117_shield_azdelivery_AMS1117_Shield_AZDelivery" 0 0 50 H V C CNN
+F1 "fhc-pcb-rescue_AMS1117_Shield_AZDelivery-ams1117_shield_azdelivery" 0 0 50 H V C CNN
 F2 "" 0 0 50 H I C CNN
 F3 "" 0 0 50 H I C CNN
 DRAW
