@@ -375,7 +375,7 @@ Wire Wire Line
 Wire Wire Line
 	1250 2700 1650 2700
 $Comp
-L fhc-pcb-rescue:AMS1117_Shield_AZDelivery-ams1117_shield_azdelivery U2
+L ams1117_shield_azdelivery:AMS1117_Shield_AZDelivery U2
 U 1 1 6095DB03
 P 2850 2150
 F 0 "U2" H 2800 2115 50  0000 C CNN
