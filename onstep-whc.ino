@@ -155,8 +155,14 @@ void setup() {
   D("IP address:\t");
   DL(WiFi.localIP());                    // Send the IP address of the ESP8266 to the computer
 
-  // ToDo: validate that we're talking to OnStep
-  // Check response from ":GVP#" - has to be "On-Step#" 
+  // Check response from ":GVP#" - has to be "On-Step#"
+  if (processCommand(":GVP#") == "On-Step#") {
+    DL("Successfully found OnStep command server.");
+  }
+  else {
+    DL("Did not find OnStep command server. Continuing anyways");
+    // add led blink code in when PCB with leds is available
+  }
 }
 
 // main program loop
