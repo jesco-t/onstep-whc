@@ -128,6 +128,22 @@ X VOUT 4 350 -300 100 L 50 50 1 1 O
 ENDDRAW
 ENDDEF
 #
+# ams1117_shield_azdelivery_OLED_0.91_AZDelivery
+#
+DEF ams1117_shield_azdelivery_OLED_0.91_AZDelivery U 0 40 Y Y 1 F N
+F0 "U" 0 -250 50 H V C CNN
+F1 "ams1117_shield_azdelivery_OLED_0.91_AZDelivery" 0 250 50 H V C CNN
+F2 "" -50 50 50 H I C CNN
+F3 "" -50 50 50 H I C CNN
+DRAW
+S -500 200 500 -200 0 1 0 N
+X GND 1 -600 -150 100 R 50 50 1 1 I
+X VCC 2 -600 -50 100 R 50 50 1 1 I
+X SCK 3 -600 50 100 R 50 50 1 1 I
+X SDA 4 -600 150 100 R 50 50 1 1 I
+ENDDRAW
+ENDDEF
+#
 # power_+9V
 #
 DEF power_+9V #PWR 0 0 Y Y 1 F P
