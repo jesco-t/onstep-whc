@@ -86,6 +86,20 @@ int focus_largestep = 100;
 int focus_step = focus_smallstep;
 int focus_delay = 100;
 
+// Button variables
+int pinUp_status = 0;
+int pinDown_status = 0;
+int pinSpecial_status = 0;
+int pinLeft_status = 0;
+int pinRight_status = 0;
+int pinUp_duration = 0;
+int pinDown_duration = 0;
+int pinSpecial_duration = 0;
+int pinLeft_duration = 0;
+int pinRight_duration = 0;
+unsigned long lastReadout_time = 0;
+unsigned long Readout_time = 0;
+
 WiFiClient cmdSvrClient;
 
 // processCommand with the OnStep server
@@ -131,7 +145,7 @@ String processCommand(String cmd){
 
 // Setup routine
 void setup() {
-
+  // set up input and output pins
   pinMode(PIN_UP, INPUT); // focus in
   pinMode(PIN_DOWN, INPUT); // focus out
   pinMode(PIN_LEFT, INPUT); // focus out
@@ -155,23 +169,15 @@ void setup() {
   WiFi.begin(ssid, password);             
   DL("Connecting to "); 
   D(ssid); DL(" ..."); Serial.flush();
-
   int i = 0;
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
     D(++i); D(' ');
   }
-
-  // light up blue on-board LED when connected (only in debug mode)
-#ifdef DEBUG
-  pinMode(LED_BUILTIN, OUTPUT);
-  digitalWrite(LED_BUILTIN, LOW);
-#endif
-
   DL("");
   DL("Connection established!");  
   D("IP address:\t");
-  DL(WiFi.localIP());                    // Send the IP address of the ESP8266 to the computer
+  DL(WiFi.localIP());
 
   // Check response from ":GVP#" - has to be "On-Step#"
   if (processCommand(":GVP#") == "On-Step#") {
@@ -186,6 +192,40 @@ void setup() {
 
   // temp - start in focus mode
   digitalWrite(LED_RIGHT, LOW);
+
+  // set first value for readout of buttons, otherwise it is undefined
+  lastReadout_time = millis();
+}
+
+// Read button status
+void readPins() {
+  // save current time as helper to determine how long buttons are pushed
+  Readout_time = millis();
+
+  // read buttons
+  pinUp_status = digitalRead(PIN_UP);
+  pinDown_status = digitalRead(PIN_DOWN);
+  pinSpecial_status = digitalRead(PIN_SPECIAL);
+  pinLeft_status = digitalRead(PIN_LEFT);
+  pinRight_status = digitalRead(PIN_RIGHT);
+
+  // debug output
+  D("pinUp_status: ");
+  DL(pinUp_status);
+  D("pinDown_status: ");
+  DL(pinDown_status);
+  D("pinSpecial_status: ");
+  DL(pinSpecial_status);
+  D("pinLeft_status: ");
+  DL(pinLeft_status); 
+  D("pinRight_status: ");
+  DL(pinRight_status);
+
+  // Determine push time, if button was previously pushed (discard pushes below 25ms)
+  // todo...
+
+  // clean up and save last button readout time
+  lastReadout_time = Readout_time;
 }
 
 // main program loop
@@ -197,17 +237,8 @@ void loop() {
   unsigned long start_time = millis();
   
   // get status of all buttons
-  int pinUp_status = digitalRead(PIN_UP);;
-  int pinDown_status = digitalRead(PIN_DOWN);
-  int pinSpecial_status = digitalRead(PIN_SPECIAL);
+  readPins();
 
-  D("pinUp_status: ");
-  DL(pinUp_status);
-  D("pinDown_status: ");
-  DL(pinDown_status);
-  D("pinSpecial_status: ");
-  DL(pinSpecial_status);
-  
   // Upper button = Move Focus Inward
   if (pinUp_status == 1 && pinDown_status == 0 && pinSpecial_status == 0){
     while (pinUp_status == 1 && pinDown_status == 0 && pinSpecial_status == 0){
@@ -216,9 +247,7 @@ void loop() {
       DL(cmd);
       cmd_result = processCommand(cmd);
       delay(focus_delay);
-      pinUp_status = digitalRead(PIN_UP);
-      pinDown_status = digitalRead(PIN_DOWN);
-      pinSpecial_status = digitalRead(PIN_SPECIAL);
+      readPins();
     }
   }
   /*
@@ -231,9 +260,7 @@ void loop() {
       DL(cmd);
       cmd_result = processCommand(cmd);
       delay(focus_delay);
-      pinUp_status = digitalRead(PIN_UP);
-      pinDown_status = digitalRead(PIN_DOWN);
-      pinSpecial_status = digitalRead(PIN_SPECIAL);
+      readPins();
     }
   }
   /*
@@ -253,9 +280,7 @@ void loop() {
    */
   if (pinUp_status == 0 && pinDown_status == 0 && pinSpecial_status == 1){
     delay(1000); // only issue command if button is pressed for more than one second
-      pinUp_status = digitalRead(PIN_UP);
-      pinDown_status = digitalRead(PIN_DOWN);
-      pinSpecial_status = digitalRead(PIN_SPECIAL);
+      readPins();
     if (pinUp_status == 0 && pinDown_status == 0 && pinSpecial_status == 1){
       cmd = ":FH#";
       cmd_result = processCommand(cmd);
@@ -266,9 +291,7 @@ void loop() {
    */
   if (pinUp_status == 1 && pinDown_status == 1 && pinSpecial_status == 0){
     delay(1000); // only issue command if button is pressed for more than one second
-      pinUp_status = digitalRead(PIN_UP);
-      pinDown_status = digitalRead(PIN_DOWN);
-      pinSpecial_status = digitalRead(PIN_SPECIAL);
+      readPins();
     if (pinUp_status == 1 && pinDown_status == 1 && pinSpecial_status == 0){
       cmd = ":Fh#";
       cmd_result = processCommand(cmd);
