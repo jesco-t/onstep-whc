@@ -148,8 +148,18 @@ String processCommand(String cmd){
 // Read button status
 // * * * * * * * * * * * * * * * * * * * * *
 void readPins() {
-  // save current time as helper to determine how long buttons are pushed
+  // Save button status from last call
+  int pinUp_prevstatus = pinUp_status;
+  int pinDown_prevstatus = pinDown_status;
+  int pinSpecial_prevstatus = pinSpecial_status;
+  int pinLeft_prevstatus = pinLeft_status;
+  int pinRight_prevstatus = pinRight_status;
+
+  // save current time as helper to determine how long buttons are pushed (consider first run of this function when lastReadout_time is 0)
   Readout_time = millis();
+  if (lastReadout_time == 0) {
+    lastReadout_time = Readout_time;
+  }
 
   // read buttons
   pinUp_status = digitalRead(PIN_UP);
@@ -158,20 +168,26 @@ void readPins() {
   pinLeft_status = digitalRead(PIN_LEFT);
   pinRight_status = digitalRead(PIN_RIGHT);
 
-  // debug output
-  D("pinUp_status: ");
-  DL(pinUp_status);
-  D("pinDown_status: ");
-  DL(pinDown_status);
-  D("pinSpecial_status: ");
-  DL(pinSpecial_status);
-  D("pinLeft_status: ");
-  DL(pinLeft_status); 
-  D("pinRight_status: ");
-  DL(pinRight_status);
+  // Determine push time, if button was previously pushed
+  // only up implemented right now...
+  if (pinUp_status == 1) {
+    // code for button previously pushed
+    if (pinUp_prevstatus == 1) {
+      pinUp_duration = pinUp_duration + (Readout_time - lastReadout_time);
+    } else {
+      pinUp_duration = 0;
+    }
+  }
+  else {
+    pinUp_duration = 0;
+  }
 
-  // Determine push time, if button was previously pushed (discard pushes below 25ms)
-  // todo...
+  // debug output
+  D("pinUp_status: "); D(pinUp_status); D(" / pressed time: "); DL(pinUp_duration);
+  D("pinDown_status: "); D(pinDown_status); D(" / pressed time: "); DL(pinDown_duration);
+  D("pinSpecial_status: "); D(pinSpecial_status); D(" / pressed time: "); DL(pinSpecial_duration);
+  D("pinLeft_status: "); D(pinLeft_status);  D(" / pressed time: "); DL(pinLeft_duration);
+  D("pinRight_status: "); D(pinRight_status); D(" / pressed time: "); DL(pinRight_duration);
 
   // clean up and save last button readout time
   lastReadout_time = Readout_time;
