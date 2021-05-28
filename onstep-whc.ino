@@ -79,6 +79,7 @@
 const char* ssid     = "ONSTEP";
 const char* password = "password";
 IPAddress onstep(192,168,0,1);
+WiFiClient cmdSvrClient;
 
 /* Focuser speed settings */
 int focus_smallstep = 10;
@@ -100,9 +101,9 @@ int pinRight_duration = 0;
 unsigned long lastReadout_time = 0;
 unsigned long Readout_time = 0;
 
-WiFiClient cmdSvrClient;
-
-// processCommand with the OnStep server
+// * * * * * * * * * * * * * * * * * * * * *
+// Command communication with OnStep server
+// * * * * * * * * * * * * * * * * * * * * *
 String processCommand(String cmd){
   // Debugging output
   D("Command: "); D(cmd); D(" - ");
@@ -143,7 +144,42 @@ String processCommand(String cmd){
   return data_return;
 }
 
+// * * * * * * * * * * * * * * * * * * * * *
+// Read button status
+// * * * * * * * * * * * * * * * * * * * * *
+void readPins() {
+  // save current time as helper to determine how long buttons are pushed
+  Readout_time = millis();
+
+  // read buttons
+  pinUp_status = digitalRead(PIN_UP);
+  pinDown_status = digitalRead(PIN_DOWN);
+  pinSpecial_status = digitalRead(PIN_SPECIAL);
+  pinLeft_status = digitalRead(PIN_LEFT);
+  pinRight_status = digitalRead(PIN_RIGHT);
+
+  // debug output
+  D("pinUp_status: ");
+  DL(pinUp_status);
+  D("pinDown_status: ");
+  DL(pinDown_status);
+  D("pinSpecial_status: ");
+  DL(pinSpecial_status);
+  D("pinLeft_status: ");
+  DL(pinLeft_status); 
+  D("pinRight_status: ");
+  DL(pinRight_status);
+
+  // Determine push time, if button was previously pushed (discard pushes below 25ms)
+  // todo...
+
+  // clean up and save last button readout time
+  lastReadout_time = Readout_time;
+}
+
+// * * * * * * * * * * * * * * * * * * * * *
 // Setup routine
+// * * * * * * * * * * * * * * * * * * * * *
 void setup() {
   // set up input and output pins
   pinMode(PIN_UP, INPUT); // focus in
@@ -197,38 +233,9 @@ void setup() {
   lastReadout_time = millis();
 }
 
-// Read button status
-void readPins() {
-  // save current time as helper to determine how long buttons are pushed
-  Readout_time = millis();
-
-  // read buttons
-  pinUp_status = digitalRead(PIN_UP);
-  pinDown_status = digitalRead(PIN_DOWN);
-  pinSpecial_status = digitalRead(PIN_SPECIAL);
-  pinLeft_status = digitalRead(PIN_LEFT);
-  pinRight_status = digitalRead(PIN_RIGHT);
-
-  // debug output
-  D("pinUp_status: ");
-  DL(pinUp_status);
-  D("pinDown_status: ");
-  DL(pinDown_status);
-  D("pinSpecial_status: ");
-  DL(pinSpecial_status);
-  D("pinLeft_status: ");
-  DL(pinLeft_status); 
-  D("pinRight_status: ");
-  DL(pinRight_status);
-
-  // Determine push time, if button was previously pushed (discard pushes below 25ms)
-  // todo...
-
-  // clean up and save last button readout time
-  lastReadout_time = Readout_time;
-}
-
+// * * * * * * * * * * * * * * * * * * * * *
 // main program loop
+// * * * * * * * * * * * * * * * * * * * * *
 void loop() {
   String cmd;
   String cmd_result;
