@@ -52,9 +52,9 @@
   #define DLF(x)
 #endif
 
-/*
- * Configuration
- */
+// * * * * * * * * * * * * * * * * * * * * *
+// Configuration
+// * * * * * * * * * * * * * * * * * * * * *
 
 /* PINMAP (PINMAP_BREADBOARD,...) */
 #define PINMAP_PCB_R1
