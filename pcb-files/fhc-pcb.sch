@@ -306,7 +306,7 @@ U 1 1 6095510F
 P 2000 2350
 F 0 "SW7" H 2000 2635 50  0000 C CNN
 F 1 "SW_Push" H 2000 2544 50  0000 C CNN
-F 2 "Personal Library:Wippschalter" H 2000 2550 50  0001 C CNN
+F 2 "Connector_Molex:Molex_KK-254_AE-6410-02A_1x02_P2.54mm_Vertical" H 2000 2550 50  0001 C CNN
 F 3 "~" H 2000 2550 50  0001 C CNN
 	1    2000 2350
 	1    0    0    -1  
@@ -386,7 +386,7 @@ U 1 1 6078852E
 P 4200 4300
 F 0 "U1" H 4200 3411 50  0000 C CNN
 F 1 "WeMos_D1_mini" H 4200 3320 50  0000 C CNN
-F 2 "Module:WEMOS_D1_mini_light" H 4200 3150 50  0001 C CNN
+F 2 "Personal Library:WEMOS_D1_Mini" H 4200 3150 50  0001 C CNN
 F 3 "https://wiki.wemos.cc/products:d1:d1_mini#documentation" H 2350 3150 50  0001 C CNN
 	1    4200 4300
 	1    0    0    -1  
