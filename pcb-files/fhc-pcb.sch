@@ -278,12 +278,12 @@ Wire Wire Line
 Wire Wire Line
 	1250 2700 1650 2700
 $Comp
-L ams1117_shield_azdelivery:AMS1117_Shield_AZDelivery U2
+L whc_schematics:AMS1117_Shield_AZDelivery U2
 U 1 1 6095DB03
 P 2850 2150
 F 0 "U2" H 2800 2115 50  0000 C CNN
 F 1 "AMS1117_Shield_AZDelivery" H 2800 2024 50  0000 C CNN
-F 2 "Personal Library:AMS1117_Shield_AZDelivery" H 2850 2150 50  0001 C CNN
+F 2 "whc_pcb-files:AMS1117_Shield_AZDelivery" H 2850 2150 50  0001 C CNN
 F 3 "" H 2850 2150 50  0001 C CNN
 	1    2850 2150
 	1    0    0    -1  
@@ -345,12 +345,12 @@ Wire Wire Line
 Wire Wire Line
 	6100 5200 6100 5400
 $Comp
-L ams1117_shield_azdelivery:OLED_0.91_AZDelivery U3
+L whc_schematics:OLED_0.91_AZDelivery U3
 U 1 1 60A45D70
 P 5250 6700
 F 0 "U3" H 5200 6450 50  0000 L CNN
 F 1 "OLED_0.91_AZDelivery" H 4850 6950 50  0000 L CNN
-F 2 "Personal Library:OLED_0.91_AZDelivery" H 5200 6750 50  0001 C CNN
+F 2 "whc_pcb-files:OLED_0.91_AZDelivery" H 5200 6750 50  0001 C CNN
 F 3 "https://www.amazon.de/AZDelivery-Display-Arduino-Raspberry-Gratis/dp/B079H2C7WH/ref=sr_1_14?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=2ERUKSBFURHA&dchild=1&keywords=display%2Bazdelivery&qid=1621334872&sprefix=display%2Baz%2Caps%2C158&sr=8-14&th=1" H 5200 6750 50  0001 C CNN
 	1    5250 6700
 	0    1    1    0   
@@ -386,7 +386,7 @@ U 1 1 6078852E
 P 4200 4300
 F 0 "U1" H 4200 3411 50  0000 C CNN
 F 1 "WeMos_D1_mini" H 4200 3320 50  0000 C CNN
-F 2 "Personal Library:WEMOS_D1_Mini" H 4200 3150 50  0001 C CNN
+F 2 "whc_pcb-files:WEMOS_D1_Mini" H 4200 3150 50  0001 C CNN
 F 3 "https://wiki.wemos.cc/products:d1:d1_mini#documentation" H 2350 3150 50  0001 C CNN
 	1    4200 4300
 	1    0    0    -1  
