@@ -244,7 +244,6 @@ Wire Wire Line
 Connection ~ 8000 2800
 Wire Wire Line
 	8000 2800 8000 3400
-Connection ~ 4300 3000
 $Comp
 L power:GND #PWR0103
 U 1 1 6095456B
@@ -256,25 +255,8 @@ F 3 "" H 1750 2800 50  0001 C CNN
 	1    1750 2800
 	1    0    0    -1  
 $EndComp
-$Comp
-L whc_schematics:AMS1117_Shield_AZDelivery U2
-U 1 1 6095DB03
-P 2850 2150
-F 0 "U2" H 2800 2115 50  0000 C CNN
-F 1 "AMS1117_Shield_AZDelivery" H 2800 2024 50  0000 C CNN
-F 2 "whc_pcb-files:AMS1117_Shield_AZDelivery" H 2850 2150 50  0001 C CNN
-F 3 "" H 2850 2150 50  0001 C CNN
-	1    2850 2150
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	4300 2450 4300 3000
-Wire Wire Line
-	3200 2550 3350 2550
 Wire Wire Line
 	2200 2800 2200 2550
-Wire Wire Line
-	2200 2550 2400 2550
 $Comp
 L Switch:SW_Push SW7
 U 1 1 6095510F
@@ -290,10 +272,6 @@ Wire Wire Line
 	1750 2700 1750 2350
 Wire Wire Line
 	1750 2350 1800 2350
-Wire Wire Line
-	2200 2350 2200 2450
-Wire Wire Line
-	2200 2450 2400 2450
 Wire Wire Line
 	5800 2300 5800 3000
 Wire Wire Line
@@ -390,50 +368,27 @@ Wire Wire Line
 	1750 2700 1700 2700
 Wire Wire Line
 	2200 2800 1750 2800
-Connection ~ 1750 2350
 Connection ~ 1750 2800
 Wire Wire Line
 	1750 2800 1700 2800
+Wire Wire Line
+	2200 2350 3150 2350
+Wire Wire Line
+	4100 2350 4100 3500
+Wire Wire Line
+	2200 2550 3650 2550
 $Comp
-L power:+9V #PWR0104
-U 1 1 60E6D733
-P 2200 2350
-F 0 "#PWR0104" H 2200 2200 50  0001 C CNN
-F 1 "+9V" H 2215 2523 50  0000 C CNN
-F 2 "" H 2200 2350 50  0001 C CNN
-F 3 "" H 2200 2350 50  0001 C CNN
-	1    2200 2350
+L power:+5V #PWR?
+U 1 1 60EEBCA7
+P 3150 2350
+F 0 "#PWR?" H 3150 2200 50  0001 C CNN
+F 1 "+5V" H 3165 2523 50  0000 C CNN
+F 2 "" H 3150 2350 50  0001 C CNN
+F 3 "" H 3150 2350 50  0001 C CNN
+	1    3150 2350
 	1    0    0    -1  
 $EndComp
-Connection ~ 2200 2350
-$Comp
-L power:GND #PWR0105
-U 1 1 60E6DBAD
-P 3350 2550
-F 0 "#PWR0105" H 3350 2300 50  0001 C CNN
-F 1 "GND" H 3355 2377 50  0000 C CNN
-F 2 "" H 3350 2550 50  0001 C CNN
-F 3 "" H 3350 2550 50  0001 C CNN
-	1    3350 2550
-	1    0    0    -1  
-$EndComp
-Connection ~ 3350 2550
+Connection ~ 3150 2350
 Wire Wire Line
-	3350 2550 3650 2550
-Wire Wire Line
-	3200 2450 3500 2450
-$Comp
-L power:+3V3 #PWR?
-U 1 1 60E6E093
-P 3500 2450
-F 0 "#PWR?" H 3500 2300 50  0001 C CNN
-F 1 "+3V3" H 3515 2623 50  0000 C CNN
-F 2 "" H 3500 2450 50  0001 C CNN
-F 3 "" H 3500 2450 50  0001 C CNN
-	1    3500 2450
-	1    0    0    -1  
-$EndComp
-Connection ~ 3500 2450
-Wire Wire Line
-	3500 2450 4300 2450
+	3150 2350 4100 2350
 $EndSCHEMATC
