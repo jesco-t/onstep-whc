@@ -169,7 +169,6 @@ void readPins() {
   pinRight_status = digitalRead(PIN_RIGHT);
 
   // Determine push time, if button was previously pushed
-  // only up implemented right now...
   if (pinUp_status == 1) {
     // code for button previously pushed
     if (pinUp_prevstatus == 1) {
@@ -181,7 +180,51 @@ void readPins() {
   else {
     pinUp_duration = 0;
   }
-
+  if (pinDown_status == 1) {
+    // code for button previously pushed
+    if (pinDown_prevstatus == 1) {
+      pinDown_duration = pinDown_duration + (Readout_time - lastReadout_time);
+    } else {
+      pinDown_duration = 0;
+    }
+  }
+  else {
+    pinDown_duration = 0;
+  }
+  if (pinLeft_status == 1) {
+    // code for button previously pushed
+    if (pinLeft_prevstatus == 1) {
+      pinLeft_duration = pinLeft_duration + (Readout_time - lastReadout_time);
+    } else {
+      pinLeft_duration = 0;
+    }
+  }
+  else {
+    pinLeft_duration = 0;
+  }
+  if (pinRight_status == 1) {
+    // code for button previously pushed
+    if (pinRight_prevstatus == 1) {
+      pinRight_duration = pinRight_duration + (Readout_time - lastReadout_time);
+    } else {
+      pinRight_duration = 0;
+    }
+  }
+  else {
+    pinRight_duration = 0;
+  } 
+  if (pinSpecial_status == 1) {
+    // code for button previously pushed
+    if (pinSpecial_prevstatus == 1) {
+      pinSpecial_duration = pinSpecial_duration + (Readout_time - lastReadout_time);
+    } else {
+      pinSpecial_duration = 0;
+    }
+  }
+  else {
+    pinSpecial_duration = 0;
+  }  
+   
   // debug output
   D("pinUp_status: "); D(pinUp_status); D(" / pressed time: "); DL(pinUp_duration);
   D("pinDown_status: "); D(pinDown_status); D(" / pressed time: "); DL(pinDown_duration);
@@ -261,6 +304,7 @@ void loop() {
   
   // get status of all buttons
   readPins();
+  //delay(1000);
 
   // Upper button = Move Focus Inward
   if (pinUp_status == 1 && pinDown_status == 0 && pinSpecial_status == 0){
