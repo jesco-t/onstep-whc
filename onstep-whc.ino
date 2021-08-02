@@ -57,22 +57,15 @@
 // * * * * * * * * * * * * * * * * * * * * *
 
 /* PINMAP (PINMAP_BREADBOARD,...) */
-#define PINMAP_PCB_R1
+#define PINMAP_PCB_R2
 
-#ifdef PINMAP_BREADBOARD
-  #define PIN_UP      D5
-  #define PIN_DOWN    D1
-  #define PIN_SPECIAL D6
-#endif
-
-#ifdef PINMAP_PCB_R1
-  #define PIN_UP      D2
-  #define PIN_DOWN    D5
-  #define PIN_LEFT    D6
-  #define PIN_RIGHT   D1
-  #define PIN_SPECIAL D7
-  #define LED_LEFT    D4   
-  #define LED_RIGHT   D3
+#ifdef PINMAP_PCB_R2
+  #define PIN_UP      D1
+  #define PIN_DOWN    D6
+  #define PIN_LEFT    D7
+  #define PIN_RIGHT   D0
+  #define PIN_SPECIAL RX
+  #define LED_RED     D4
 #endif
 
 /* Network credentials (OnStep defaults are "ONSTEP" and "password" */
@@ -246,12 +239,10 @@ void setup() {
   pinMode(PIN_LEFT, INPUT); // focus out
   pinMode(PIN_RIGHT, INPUT); // focus out
   pinMode(PIN_SPECIAL, INPUT); // focus speed change
-  pinMode(LED_LEFT, OUTPUT);
-  pinMode(LED_RIGHT, OUTPUT);
-
+  pinMode(LED_RED, OUTPUT);
+  
   // set LED on at startup
-  digitalWrite(LED_LEFT, LOW);
-  digitalWrite(LED_RIGHT, LOW);
+  digitalWrite(LED_RED, LOW);
 
 #ifdef DEBUG
   DebugSer.begin(115200); 
@@ -277,8 +268,7 @@ void setup() {
   // Check response from ":GVP#" - has to be "On-Step#"
   if (processCommand(":GVP#") == "On-Step#") {
     DL("Successfully found OnStep command server.");
-    digitalWrite(LED_LEFT, HIGH);
-    digitalWrite(LED_RIGHT, HIGH);
+    digitalWrite(LED_RED, HIGH);
   }
   else {
     DL("Did not find OnStep command server. Continuing anyways");
@@ -286,10 +276,13 @@ void setup() {
   }
 
   // temp - start in focus mode
-  digitalWrite(LED_RIGHT, LOW);
+  digitalWrite(LED_RED, LOW);
 
   // set first value for readout of buttons, otherwise it is undefined
   lastReadout_time = millis();
+
+  //DL(digitalRead(PIN_UP));
+  //delay(10000);
 }
 
 // * * * * * * * * * * * * * * * * * * * * *
