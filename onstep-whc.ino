@@ -35,6 +35,14 @@
 
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
+#include <Wire.h>
+#include "SSD1306Ascii.h"
+#include "SSD1306AsciiWire.h"
+#define I2C_ADDRESS 0x3C
+
+/*
+ * 
+ * https://funduino.de/nr-42-oled-display-ssd1306-128x64-128x32
 
 /* Enable debugging messages via the serial monitor */
 #define DEBUG
@@ -75,9 +83,8 @@ IPAddress onstep(192,168,0,1);
 WiFiClient cmdSvrClient;
 
 /* Focuser speed settings */
-int focus_smallstep = 10;
+int focus_smallstep = 25;
 int focus_largestep = 100;
-int focus_step = focus_smallstep;
 int focus_delay = 100;
 
 // Button variables
@@ -93,6 +100,8 @@ int pinLeft_duration = 0;
 int pinRight_duration = 0;
 unsigned long lastReadout_time = 0;
 unsigned long Readout_time = 0;
+
+SSD1306AsciiWire oled;
 
 // * * * * * * * * * * * * * * * * * * * * *
 // Command communication with OnStep server
@@ -240,6 +249,16 @@ void setup() {
   pinMode(PIN_RIGHT, INPUT); // focus out
   pinMode(PIN_SPECIAL, INPUT); // focus speed change
   pinMode(LED_RED, OUTPUT);
+
+  // initialize I2C
+  /*Wire.begin();
+  Wire.setClock(400000L);
+  oled.begin(&Adafruit128x32, I2C_ADDRESS);*/
+
+  /*oled.setFont(System5x7); // Auswahl der Schriftart
+  oled.clear();
+  oled.println("Viel");
+  oled.print("Erfolg!!!");*/
   
   // set LED on at startup
   digitalWrite(LED_RED, LOW);
@@ -276,7 +295,7 @@ void setup() {
   }
 
   // temp - start in focus mode
-  digitalWrite(LED_RED, LOW);
+  //digitalWrite(LED_RED, HIGH);
 
   // set first value for readout of buttons, otherwise it is undefined
   lastReadout_time = millis();
@@ -302,7 +321,10 @@ void loop() {
   // Upper button = Move Focus Inward
   if (pinUp_status == 1 && pinDown_status == 0 && pinSpecial_status == 0){
     while (pinUp_status == 1 && pinDown_status == 0 && pinSpecial_status == 0){
-      cmd = ":FR" + String(focus_step);
+      cmd = ":FR" + String(focus_smallstep);
+      if (pinUp_duration > 1000 ) {
+        cmd = ":FR" + String(focus_largestep);
+      }
       cmd = cmd + "#";
       DL(cmd);
       cmd_result = processCommand(cmd);
@@ -315,25 +337,16 @@ void loop() {
    */
   if (pinUp_status == 0 && pinDown_status == 1 && pinSpecial_status == 0){
     while (pinUp_status == 0 && pinDown_status == 1 && pinSpecial_status == 0){
-      cmd = ":FR-" + String(focus_step);
+      cmd = ":FR-" + String(focus_smallstep);
+      if (pinDown_duration > 1000 ) {
+        cmd = ":FR-" + String(focus_largestep);
+      }
       cmd = cmd + "#";
       DL(cmd);
       cmd_result = processCommand(cmd);
       delay(focus_delay);
       readPins();
     }
-  }
-  /*
-   * Up + Special = Stepsize auf Large
-   */
-  if (pinUp_status == 1 && pinDown_status == 0 && pinSpecial_status == 1){
-    focus_step = focus_largestep;
-  }
-  /*
-   * Down + Special = Stepsize auf Small
-   */
-  if (pinUp_status == 0 && pinDown_status == 1 && pinSpecial_status == 1){
-    focus_step = focus_smallstep;
   }
   /*
    * set current focuser position as new home
