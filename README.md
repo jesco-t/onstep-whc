@@ -2,26 +2,29 @@
 
 This is a wireless handcontroller for the awesome OnStep telescope controller. Currently it only controls the focuser 1 module. It is based on the ESP8266 WiFi board.
 
-# Development breadboard
+# Current PCB
 
-This is a snapshot of my simples development breadboard. It only controls the focuser for now.
+Revision 2 of the PCB is planned to support one focuser and mount movement. A simple 0.91" OLED display is used to show operation mode and simple coordinates.
 
-![Simple Breadboard](/support-files/Breadboard_Focuser-only.jpg)
+![R2 PCB](/support-files/PCB_R2.jpg)
 
 Part list is
 * WeMos D1 Mini Pro
-* push buttons
-* 10k resistors
-* power supply board (to give 3.3V to the power rails)
+* 5x push buttons
+* 5x 10k resistors
+* 1x LED, red
+* 1x 4.7k resistor
+* 1x 0.91" 128x32 OLED (SSD1306 based)
+* Female pin headers to mount WeMOS and OLED
+* Male pin header to create jumper switch for on/off
+* Battery holder for 4x AA batteries as power supply (mounted on backside)
 
 # What already works, and what doesn't
 
 Good
 * Focuser 1 works
   * focus in and out
-  * speed change slow/fast
-  * set home position
-  * go to home position
+  * speed change slow/fast (by duration of button press)
 
 Bad
 * No mount control yet
@@ -29,8 +32,4 @@ Bad
 # Commands
 * Focus Inward = Upper Button
 * Focus Outward = Lower Button
-* Set focus speed to fast = Upper + Middle Button
-* Set focus speed to slow = Lower + Middle Button
-* Set current position as home/middlle = Middle Button for longer than 1s
-* Move focuser to home/middle position = Upper + Middle Button for longer 1s
 
