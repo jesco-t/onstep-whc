@@ -35,16 +35,18 @@
 
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
+#include <SPI.h>
 #include <Wire.h>
-#include "SSD1306Ascii.h"
-#include "SSD1306AsciiWire.h"
-#define I2C_ADDRESS 0x3C
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+#include "font.h"
 
-/*
- * 
- * https://funduino.de/nr-42-oled-display-ssd1306-128x64-128x32
+#define SCREEN_WIDTH 128 // OLED display width, in pixels
+#define SCREEN_HEIGHT 32 // OLED display height, in pixels
+#define OLED_RESET     -1 // Reset pin # (or -1 if sharing Arduino reset pin)
+#define SCREEN_ADDRESS 0x3C ///< See datasheet for Address; 0x3D for 128x64, 0x3C for 128x32
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
-/* Enable debugging messages via the serial monitor */
 #define DEBUG
 #define DebugSer Serial
 
@@ -100,8 +102,6 @@ int pinLeft_duration = 0;
 int pinRight_duration = 0;
 unsigned long lastReadout_time = 0;
 unsigned long Readout_time = 0;
-
-SSD1306AsciiWire oled;
 
 // * * * * * * * * * * * * * * * * * * * * *
 // Command communication with OnStep server
@@ -250,15 +250,18 @@ void setup() {
   pinMode(PIN_SPECIAL, INPUT); // focus speed change
   pinMode(LED_RED, OUTPUT);
 
-  // initialize I2C
-  /*Wire.begin();
-  Wire.setClock(400000L);
-  oled.begin(&Adafruit128x32, I2C_ADDRESS);*/
-
-  /*oled.setFont(System5x7); // Auswahl der Schriftart
-  oled.clear();
-  oled.println("Viel");
-  oled.print("Erfolg!!!");*/
+  Wire.begin(D2, D5);
+  // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
+  if(!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
+    Serial.println(F("SSD1306 allocation failed"));
+    for(;;); // Don't proceed, loop forever
+  }
+  // Show initial display buffer contents on the screen --
+  // the library initializes this with an Adafruit splash screen.
+  display.display();
+  delay(2000); // Pause for 2 seconds
+  // Clear the buffer
+  display.clearDisplay();
   
   // set LED on at startup
   digitalWrite(LED_RED, LOW);
