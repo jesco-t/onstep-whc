@@ -87,18 +87,14 @@ Sync. with current target RA/Dec          :CM#  Reply: N/A
 // Configuration
 // * * * * * * * * * * * * * * * * * * * * *
 
-/*
- * OLED screen definitions
- */
+/* OLED screen definitions */
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 32 // OLED display height, in pixels
 #define OLED_RESET     -1 // Reset pin # (or -1 if sharing Arduino reset pin)
 #define SCREEN_ADDRESS 0x3C ///< See datasheet for Address; 0x3D for 128x64, 0x3C for 128x32
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
-/* 
- * PINMAP 
- */
+/* PINMAP */
 #define PINMAP_PCB_R2
 
 #ifdef PINMAP_PCB_R2
@@ -110,9 +106,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
   #define LED_RED     D4
 #endif
 
-/*
- * Network credentials (OnStep defaults are "ONSTEP" and "password")
- */
+/* Network credentials (OnStep defaults are "ONSTEP" and "password") */
 const char* ssid     = "ONSTEP";
 const char* password = "password";
 IPAddress onstep(192,168,0,1);
