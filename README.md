@@ -24,10 +24,11 @@ Part list is
 Good
 * Focuser 1 works
   * focus in and out
-  * speed change slow/fast (by duration of button press)
+  * speed change slow/fast (switches to fast after 1s)
 
 Bad
 * No mount control yet
+* No display output yet
 
 # Commands
 * Focus Inward = Upper Button
