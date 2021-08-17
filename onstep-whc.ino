@@ -64,16 +64,9 @@ Sync. with current target RA/Dec          :CM#  Reply: N/A
 
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
-#include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-
-#define SCREEN_WIDTH 128 // OLED display width, in pixels
-#define SCREEN_HEIGHT 32 // OLED display height, in pixels
-#define OLED_RESET     -1 // Reset pin # (or -1 if sharing Arduino reset pin)
-#define SCREEN_ADDRESS 0x3C ///< See datasheet for Address; 0x3D for 128x64, 0x3C for 128x32
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 #define DEBUG
 #define DebugSer Serial
@@ -94,7 +87,18 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 // Configuration
 // * * * * * * * * * * * * * * * * * * * * *
 
-/* PINMAP (PINMAP_BREADBOARD,...) */
+/*
+ * OLED screen definitions
+ */
+#define SCREEN_WIDTH 128 // OLED display width, in pixels
+#define SCREEN_HEIGHT 32 // OLED display height, in pixels
+#define OLED_RESET     -1 // Reset pin # (or -1 if sharing Arduino reset pin)
+#define SCREEN_ADDRESS 0x3C ///< See datasheet for Address; 0x3D for 128x64, 0x3C for 128x32
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+/* 
+ * PINMAP 
+ */
 #define PINMAP_PCB_R2
 
 #ifdef PINMAP_PCB_R2
@@ -106,7 +110,9 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
   #define LED_RED     D4
 #endif
 
-/* Network credentials (OnStep defaults are "ONSTEP" and "password" */
+/*
+ * Network credentials (OnStep defaults are "ONSTEP" and "password")
+ */
 const char* ssid     = "ONSTEP";
 const char* password = "password";
 IPAddress onstep(192,168,0,1);
@@ -117,7 +123,7 @@ int focus_smallstep = 25;
 int focus_largestep = 100;
 int focus_delay = 100;
 
-// Button variables
+/* Initialize states for buttons */
 int pinUp_status = 0;
 int pinDown_status = 0;
 int pinSpecial_status = 0;
@@ -353,11 +359,13 @@ void loop() {
   // get start time for loop
   unsigned long start_time = millis();
   
-  // get status of all buttons
+  // poll state for all buttons
   readPins();
-  //delay(1000);
 
-  // Upper button = Move Focus Inward
+  /*
+   * Action:  Move Focus Inward
+   * Trigger: UP Button
+   */
   if (pinUp_status == 1 && pinDown_status == 0 && pinSpecial_status == 0){
     while (pinUp_status == 1 && pinDown_status == 0 && pinSpecial_status == 0){
       cmd = ":FR" + String(focus_smallstep);
@@ -371,8 +379,10 @@ void loop() {
       readPins();
     }
   }
+  
   /*
-   * Lower button = Move Focus Outward
+   * Action:  Move Focus Outward
+   * Trigger: DOWN Button
    */
   if (pinUp_status == 0 && pinDown_status == 1 && pinSpecial_status == 0){
     while (pinUp_status == 0 && pinDown_status == 1 && pinSpecial_status == 0){
@@ -387,6 +397,9 @@ void loop() {
       readPins();
     }
   }
+
+  // HERE COME NOT IMPLEMENTED COMMANDS
+  
   /*
    * set current focuser position as new home
    */
@@ -410,13 +423,13 @@ void loop() {
     }
   }
 
-  // ensure constant execution time
-  unsigned long end_time = millis();
+  // ensure constant execution time (not needed now that button state has duration associated)
+  /*unsigned long end_time = millis();
   unsigned long run_time = end_time - start_time;
   if ( run_time < 250) {
     D("Loop time: ");
     D(run_time);
     DL("ms");
     delay(250-run_time);
-  }
+  }*/
 }
