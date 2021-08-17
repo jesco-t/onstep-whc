@@ -278,29 +278,28 @@ void setup() {
   pinMode(PIN_SPECIAL, INPUT); // focus speed change
   pinMode(LED_RED, OUTPUT);
 
-  analogWrite(LED_RED, 0);
+  /* initialize OLED display */
   Wire.begin(D2, D5);
   // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
   if(!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
     Serial.println(F("SSD1306 allocation failed"));
     for(;;); // Don't proceed, loop forever
   }
-  // Show initial display buffer contents on the screen --
-  // the library initializes this with an Adafruit splash screen.
-  display.display();
-  delay(2000); // Pause for 2 seconds
-  // Clear the buffer
-  display.clearDisplay();
+  display.clearDisplay();       // Clear the buffer
   display.setCursor(0,0);
   display.setTextSize(1);      // Normal 1:1 pixel scale
   display.setTextColor(SSD1306_WHITE); // Draw white text
   display.setCursor(0, 0);     // Start at top-left corner
   display.cp437(true);         // Use full 256 char 'Code Page 437' font
-  display.print("R: 12h34.98m");
+  display.print("R 12:34:10\n");
+  //display.setCursor(0, 1);
+  display.print("D 65:45:21\n");
+  display.print("F 21350");
+  display.display();
   
   // set LED on at startup
   //digitalWrite(LED_RED, LOW);
-  analogWrite(LED_RED, 200);
+  analogWrite(LED_RED, 0);
 
 #ifdef DEBUG
   DebugSer.begin(115200); 
