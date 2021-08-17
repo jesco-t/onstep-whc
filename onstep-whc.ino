@@ -33,13 +33,41 @@
  *
  */
 
+/*
+ * OnStep extended LX200 protocol
+ * 
+Get date                                  :GC#  Reply: MM/DD/YY#
+Get time (Local, 24hr format)             :GL#  Reply: HH:MM:SS#
+Set target RA                             :SrHH:MM:SS# *  Reply: 0 or 1
+Set target Dec                            :SdsDD:MM:SS# *   Reply: 0 or 1
+Get telescope RA                          :GR#  Reply: HH:MM:SS# *
+Get telescope Dec                         :GD#  Reply: sDD*MM'SS# *
+Move telescope (to current Equ target)    :MS#  Reply: e *2
+Stop telescope                            :Q#   Reply: [none]
+Move telescope east (at current rate)     :Me#  Reply: [none]
+Move telescope west (at current rate)     :Mw#  Reply: [none]
+Move telescope north (at current rate)    :Mn#  Reply: [none]
+Move telescope south (at current rate)    :Ms#  Reply: [none]
+Set rate to Move                          :RM#  Reply: [none]
+Set rate to Slew                          :RS#  Reply: [none]
+Set rate to n (0-9)*3                     :Rn#  Reply: [none]
+    *3 = Slew rates are as follows.
+    All values are in multipules of the sidereal rate:
+    R0=0.25X, R1=0.5X, R2(RG)=1X, R3=2X, R4(RC)=4X, R5=8X(RM), R6=16X, R7(RS)=24X, R8=40X, R9=60X
+    (for the -Dev-Alpha branch of OnStep:
+    R0=0.25X, R1=0.5X, R2(RG)=1X, R3=2X, R4=4X, R5(RC)=8X, R6(RM)=24X, R7=48X, R8(RS)=1/2 MaxRate, R9=MaxRate)
+Tracking enable                           :Te#  Reply: 0 or 1
+Tracking disable                          :Td#  Reply: 0 or 1
+Sync. with current target RA/Dec          :CS#  Reply: [none]
+Sync. with current target RA/Dec          :CM#  Reply: N/A
+ */
+
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-#include "font.h"
 
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 32 // OLED display height, in pixels
@@ -250,6 +278,7 @@ void setup() {
   pinMode(PIN_SPECIAL, INPUT); // focus speed change
   pinMode(LED_RED, OUTPUT);
 
+  analogWrite(LED_RED, 0);
   Wire.begin(D2, D5);
   // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
   if(!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
@@ -262,9 +291,16 @@ void setup() {
   delay(2000); // Pause for 2 seconds
   // Clear the buffer
   display.clearDisplay();
+  display.setCursor(0,0);
+  display.setTextSize(1);      // Normal 1:1 pixel scale
+  display.setTextColor(SSD1306_WHITE); // Draw white text
+  display.setCursor(0, 0);     // Start at top-left corner
+  display.cp437(true);         // Use full 256 char 'Code Page 437' font
+  display.print("R: 12h34.98m");
   
   // set LED on at startup
-  digitalWrite(LED_RED, LOW);
+  //digitalWrite(LED_RED, LOW);
+  analogWrite(LED_RED, 200);
 
 #ifdef DEBUG
   DebugSer.begin(115200); 
