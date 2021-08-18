@@ -62,12 +62,18 @@ Sync. with current target RA/Dec          :CS#  Reply: [none]
 Sync. with current target RA/Dec          :CM#  Reply: N/A
  */
 
+/*
+ * INCLUDES
+ */
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
+/*
+ * Debug output functionality
+ */
 #define DEBUG
 #define DebugSer Serial
 
