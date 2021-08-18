@@ -273,6 +273,28 @@ void readPins() {
 }
 
 // * * * * * * * * * * * * * * * * * * * * *
+// main program loop
+// * * * * * * * * * * * * * * * * * * * * *
+void updatedisplay() {
+  display.clearDisplay();       // Clear the buffer
+  display.setTextSize(1);      // Normal 1:1 pixel scale
+  display.setTextColor(SSD1306_WHITE); // Draw white text
+  display.setCursor(0, 0);     // Start at top-left corner
+  display.cp437(true);         // Use full 256 char 'Code Page 437' font
+
+  String RA, DE, FO;
+
+  RA = processCommand(":GR#");
+  DE = processCommand(":GD#");
+  FO = processCommand(":FG#");
+  
+  display.print("R "); display.print(RA); display.print("\n");
+  display.print("D "); display.print(DE); display.print("\n");
+  display.print("F "); display.print(FO);
+  display.display();
+}
+
+// * * * * * * * * * * * * * * * * * * * * *
 // Setup routine
 // * * * * * * * * * * * * * * * * * * * * *
 void setup() {
@@ -430,6 +452,11 @@ void loop() {
       cmd_result = processCommand(cmd);
     }
   }
+
+  /*
+   * update OLED display
+   */
+  updatedisplay();
 
   // ensure constant execution time (not needed now that button state has duration associated)
   /*unsigned long end_time = millis();
