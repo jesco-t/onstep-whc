@@ -331,7 +331,7 @@ void setup() {
     display.display();
   }
   else {
-    DL("Did not find OnStep command server. Continuing anyways");
+    DL("Did not find OnStep command server.");
     // add led blink code in when PCB with leds is available
     display.print(" - OnStep NOT found.");
     display.display();
