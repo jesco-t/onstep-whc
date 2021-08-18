@@ -289,10 +289,10 @@ void setup() {
   display.setTextColor(SSD1306_WHITE); // Draw white text
   display.setCursor(0, 0);     // Start at top-left corner
   display.cp437(true);         // Use full 256 char 'Code Page 437' font
-  display.print("R 12:34:10\n");
-  display.print("D 65:45:21\n");
-  display.print("F 21350");
-  display.display();
+  //display.print("R 12:34:10\n");
+  //display.print("D 65:45:21\n");
+  //display.print("F 21350");
+  //display.display();
   
   /* disable LED on at startup (LED_RED and BUILTIN_LED currently on D4 */
   digitalWrite(LED_RED, HIGH);
@@ -313,6 +313,10 @@ void setup() {
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
     D(++i); D(' ');
+    display.clearDisplay();
+    display.print("Connecting to "); display.print(ssid); display.print("\n");
+    display.print(i);
+    display.display();
   }
   DL("");
   DL("Connection established!");  
@@ -322,21 +326,27 @@ void setup() {
   // Check response from ":GVP#" - has to be "On-Step#"
   if (processCommand(":GVP#") == "On-Step#") {
     DL("Successfully found OnStep command server.");
-    digitalWrite(LED_RED, HIGH);
+    //digitalWrite(LED_RED, HIGH);
+    display.print(" - OnStep found.");
+    display.display();
   }
   else {
     DL("Did not find OnStep command server. Continuing anyways");
     // add led blink code in when PCB with leds is available
+    display.print(" - OnStep NOT found.");
+    display.display();
+    for(;;); // Don't proceed, loop forever
   }
-
-  // temp - start in focus mode
-  //digitalWrite(LED_RED, HIGH);
 
   // set first value for readout of buttons, otherwise it is undefined
   lastReadout_time = millis();
 
-  //DL(digitalRead(PIN_UP));
-  //delay(10000);
+  // wait for 3s, then continue
+  delay(3000);
+
+  // clear display
+  display.clearDisplay();
+  display.display();
 }
 
 // * * * * * * * * * * * * * * * * * * * * *
