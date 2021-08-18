@@ -282,24 +282,21 @@ void setup() {
   Wire.begin(D2, D5);
   // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
   if(!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
-    Serial.println(F("SSD1306 allocation failed"));
-    for(;;); // Don't proceed, loop forever
+    DL("SSD1306 allocation failed");
   }
   display.clearDisplay();       // Clear the buffer
-  display.setCursor(0,0);
   display.setTextSize(1);      // Normal 1:1 pixel scale
   display.setTextColor(SSD1306_WHITE); // Draw white text
   display.setCursor(0, 0);     // Start at top-left corner
   display.cp437(true);         // Use full 256 char 'Code Page 437' font
   display.print("R 12:34:10\n");
-  //display.setCursor(0, 1);
   display.print("D 65:45:21\n");
   display.print("F 21350");
   display.display();
   
-  // set LED on at startup
-  //digitalWrite(LED_RED, LOW);
-  analogWrite(LED_RED, 0);
+  /* disable LED on at startup (LED_RED and BUILTIN_LED currently on D4 */
+  digitalWrite(LED_RED, HIGH);
+  //analogWrite(LED_RED, 1023);
 
 #ifdef DEBUG
   DebugSer.begin(115200); 
