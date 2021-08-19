@@ -273,7 +273,7 @@ void readPins() {
 }
 
 // * * * * * * * * * * * * * * * * * * * * *
-// main program loop
+// display routines
 // * * * * * * * * * * * * * * * * * * * * *
 void updatedisplay() {
   display.clearDisplay();       // Clear the buffer
@@ -318,10 +318,7 @@ void setup() {
   display.setTextColor(SSD1306_WHITE); // Draw white text
   display.setCursor(0, 0);     // Start at top-left corner
   display.cp437(true);         // Use full 256 char 'Code Page 437' font
-  //display.print("R 12:34:10\n");
-  //display.print("D 65:45:21\n");
-  //display.print("F 21350");
-  //display.display();
+  display.dim(true);
   
   /* disable LED on at startup (LED_RED and BUILTIN_LED currently on D4 */
   digitalWrite(LED_RED, HIGH);
