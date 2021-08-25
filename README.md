@@ -6,7 +6,7 @@ This is a wireless handcontroller for the awesome OnStep telescope controller. C
 
 Revision 2 of the PCB is planned to support one focuser and mount movement. A simple 0.91" OLED display is used to show operation mode and simple coordinates.
 
-![R2 PCB](/support-files/PCB_R2.jpg)
+![R2 PCB](/support/PCB_R2.jpg)
 
 Part list is
 * WeMos D1 Mini Pro
@@ -14,7 +14,7 @@ Part list is
 * 5x 10k resistors
 * 1x LED, red
 * 1x 4.7k resistor
-* 1x 0.91" 128x32 OLED (SSD1306 based)
+* 1x 0.96" 128x32 OLED (SSD1306 based)
 * Female pin headers to mount WeMOS and OLED
 * Male pin header to create jumper switch for on/off
 * Battery holder for 4x AA batteries as power supply (mounted on backside)

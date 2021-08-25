@@ -65,6 +65,7 @@ Sync. with current target RA/Dec          :CM#  Reply: N/A
 /*
  * INCLUDES
  */
+#include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <Wire.h>
@@ -373,7 +374,6 @@ void setup() {
 
   // clear display
   display.clearDisplay();
-  display.display();
 }
 
 // * * * * * * * * * * * * * * * * * * * * *

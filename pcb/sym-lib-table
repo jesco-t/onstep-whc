@@ -1,0 +1,5 @@
+(sym_lib_table
+  (lib (name ams1117_shield_azdelivery)(type Legacy)(uri D:/Astronomie/OnStep/ams1117_shield_azdelivery.lib)(options "")(descr ""))
+  (lib (name fhc-pcb-rescue)(type Legacy)(uri ${KIPRJMOD}/fhc-pcb-rescue.lib)(options "")(descr ""))
+  (lib (name whc_schematics)(type Legacy)(uri ${KIPRJMOD}/lib_sch/whc_schematics.lib)(options "")(descr ""))
+)
