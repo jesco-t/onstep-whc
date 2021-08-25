@@ -120,8 +120,9 @@ IPAddress onstep(192,168,0,1);
 WiFiClient cmdSvrClient;
 
 /* Focuser speed settings */
-int focus_smallstep = 25;
-int focus_largestep = 100;
+int focus_slowspeed = 25;       // slow speed step size
+int focus_fastspeed = 250;      // fast speed step size
+int focus_switchtime = 3000;    // time after switch speed is switched to fast
 int focus_delay = 100;
 
 /* Initialize states for buttons */
@@ -394,17 +395,17 @@ void loop() {
    * Trigger: UP Button
    */
   if (pinUp_status == 1 && pinDown_status == 0 && pinSpecial_status == 0){
-    while (pinUp_status == 1 && pinDown_status == 0 && pinSpecial_status == 0){
-      cmd = ":FR" + String(focus_smallstep);
-      if (pinUp_duration > 1000 ) {
-        cmd = ":FR" + String(focus_largestep);
+    //while (pinUp_status == 1 && pinDown_status == 0 && pinSpecial_status == 0){
+      cmd = ":FR" + String(focus_slowspeed);
+      if (pinUp_duration > focus_switchtime ) {
+        cmd = ":FR" + String(focus_fastspeed);
       }
       cmd = cmd + "#";
       DL(cmd);
       cmd_result = processCommand(cmd);
       delay(focus_delay);
       readPins();
-    }
+    //}
   }
   
   /*
@@ -412,17 +413,17 @@ void loop() {
    * Trigger: DOWN Button
    */
   if (pinUp_status == 0 && pinDown_status == 1 && pinSpecial_status == 0){
-    while (pinUp_status == 0 && pinDown_status == 1 && pinSpecial_status == 0){
-      cmd = ":FR-" + String(focus_smallstep);
-      if (pinDown_duration > 1000 ) {
-        cmd = ":FR-" + String(focus_largestep);
+    //while (pinUp_status == 0 && pinDown_status == 1 && pinSpecial_status == 0){
+      cmd = ":FR-" + String(focus_slowspeed);
+      if (pinDown_duration > focus_switchtime ) {
+        cmd = ":FR-" + String(focus_fastspeed);
       }
       cmd = cmd + "#";
       DL(cmd);
       cmd_result = processCommand(cmd);
       delay(focus_delay);
       readPins();
-    }
+    //}
   }
 
   // HERE COME NOT IMPLEMENTED COMMANDS
@@ -456,12 +457,10 @@ void loop() {
   updatedisplay();
 
   // ensure constant execution time (not needed now that button state has duration associated)
-  /*unsigned long end_time = millis();
+  unsigned long end_time = millis();
   unsigned long run_time = end_time - start_time;
   if ( run_time < 250) {
-    D("Loop time: ");
-    D(run_time);
-    DL("ms");
+    D("Loop time: " + String(run_time) + "ms");
     delay(250-run_time);
-  }*/
+  }
 }
