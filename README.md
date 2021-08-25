@@ -1,6 +1,6 @@
 # Wireless Handcontroller for OnStep
 
-This is a wireless handcontroller for the awesome OnStep telescope controller. Currently it only controls the focuser 1 module. It is based on the ESP8266 WiFi board.
+This is a wireless handcontroller for the awesome OnStep telescope controller. Currently it only controls the focuser 1 module. It is based on the ESP8266 WiFi board. Code is built with VSCode and Platform.IO.
 
 # Current PCB
 
