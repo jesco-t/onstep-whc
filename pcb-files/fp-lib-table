@@ -1,3 +1,0 @@
-(fp_lib_table
-  (lib (name whc_pcb-files)(type KiCad)(uri ${KIPRJMOD}/lib_fp.pretty/whc_pcb-files.pretty)(options "")(descr ""))
-)
