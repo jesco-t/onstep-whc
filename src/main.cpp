@@ -71,6 +71,7 @@ Sync. with current target RA/Dec          :CM#  Reply: N/A
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
+#include <OnTask.h>
 
 /*
  * Debug output functionality
