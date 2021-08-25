@@ -75,7 +75,7 @@ Sync. with current target RA/Dec          :CM#  Reply: N/A
 /*
  * Debug output functionality
  */
-#define DEBUG
+//#define DEBUG
 #define DebugSer Serial
 
 #ifdef DEBUG
