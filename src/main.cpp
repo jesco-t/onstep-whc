@@ -63,28 +63,28 @@ Sync. with current target RA/Dec          :CM#  Reply: N/A
  */
 
 /*
- * DEFINITIONS
- */
-#define _TASK_SLEEP_ON_IDLE_RUN // Enable 1 ms SLEEP_IDLE powerdowns between tasks if no callback methods were invoked during the pass
-#define _TASK_STATUS_REQUEST    // Compile with support for StatusRequest functionality - triggering tasks on status change events in addition to time only
-// #define _TASK_WDT_IDS           // Compile with support for wdt control points and task ids
-// #define _TASK_PRIORITY          // Support for layered scheduling priority
-// #define _TASK_STD_FUNCTION      // Support for std::function (ESP8266 and ESP32 ONLY)
+void char2RA(char* txt, unsigned int& hour, unsigned int& minute, unsigned int& second) {
+  char* pEnd;
+  hour = (int)strtol(&txt[0], &pEnd, 10);
+  minute = (int)strtol(&txt[3], &pEnd, 10);
+  second = (int)strtol(&txt[6], &pEnd, 10);
+}
+
+void char2DEC(char* txt, int& deg, unsigned int& min, unsigned int& sec) {
+  char* pEnd;
+  deg = (int)strtol(&txt[0], &pEnd, 10);
+  min = (int)strtol(&txt[4], &pEnd, 10);
+  sec = (int)strtol(&txt[7], &pEnd, 10);
+}
+*/
 
 /*
- * INCLUDES
+ * INCLUDE COMMON HEADERS AND DEFINITIONS
  */
-#include <Arduino.h>
-#include <ESP8266WiFi.h>
-#include <WiFiClient.h>
-#include <Wire.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
-#include <TaskScheduler.h>
+#include "Common.h"
+#include "Config.h"
 
-/*
- * TASK SCHEDULER
- */
+/* TASK SCHEDULER */
 Scheduler ts;
 bool InputIsProcessed = false;
 
@@ -95,59 +95,12 @@ Task tsInput ( 100 * TASK_MILLISECOND, TASK_FOREVER, &readInput, &ts, true );
 void processInput();
 Task tsProcess ( 333 * TASK_MILLISECOND, TASK_FOREVER, &processInput, &ts, true );
 
-
-/*
- * Debug output functionality
- */
-#define DEBUG
-#define DebugSer Serial
-
-#ifdef DEBUG
-  #define D(x)       DebugSer.print(x)
-  #define DF(x)      DebugSer.print(F(x))
-  #define DL(x)      DebugSer.println(x)
-  #define DLF(x)     DebugSer.println(F(x))
-#else
-  #define D(x)
-  #define DF(x)
-  #define DL(x)
-  #define DLF(x)
-#endif
-
-// * * * * * * * * * * * * * * * * * * * * *
-// Configuration
-// * * * * * * * * * * * * * * * * * * * * *
-
 /* OLED screen definitions */
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 32 // OLED display height, in pixels
 #define OLED_RESET     -1 // Reset pin # (or -1 if sharing Arduino reset pin)
 #define SCREEN_ADDRESS 0x3C ///< See datasheet for Address; 0x3D for 128x64, 0x3C for 128x32
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
-
-/* PINMAP */
-#define PINMAP_PCB_R2
-
-#ifdef PINMAP_PCB_R2
-  #define PIN_UP      D1
-  #define PIN_DOWN    D6
-  #define PIN_LEFT    D7
-  #define PIN_RIGHT   D0
-  #define PIN_SPECIAL RX
-  #define LED_RED     D4
-#endif
-
-/* Network credentials (OnStep defaults are "ONSTEP" and "password") */
-const char* ssid     = "ONSTEP";
-const char* password = "password";
-IPAddress onstep(192,168,0,1);
-WiFiClient cmdSvrClient;
-
-/* Focuser speed settings */
-int focus_slowspeed = 25;       // slow speed step size
-int focus_fastspeed = 250;      // fast speed step size
-int focus_switchtime = 3000;    // time after switch speed is switched to fast
-int focus_delay = 100;
 
 /* Initialize states for buttons */
 int pinUp_status = 0;
@@ -162,9 +115,6 @@ int pinLeft_duration = 0;
 int pinRight_duration = 0;
 unsigned long lastReadout_time = 0;
 unsigned long Readout_time = 0;
-
-//int displayhandle = 0;
-//Tasks tasks = Tasks();
 
 // * * * * * * * * * * * * * * * * * * * * *
 // Command communication with OnStep server
