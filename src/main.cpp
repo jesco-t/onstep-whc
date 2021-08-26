@@ -63,6 +63,15 @@ Sync. with current target RA/Dec          :CM#  Reply: N/A
  */
 
 /*
+ * DEFINITIONS
+ */
+#define _TASK_SLEEP_ON_IDLE_RUN // Enable 1 ms SLEEP_IDLE powerdowns between tasks if no callback methods were invoked during the pass
+#define _TASK_STATUS_REQUEST    // Compile with support for StatusRequest functionality - triggering tasks on status change events in addition to time only
+// #define _TASK_WDT_IDS           // Compile with support for wdt control points and task ids
+// #define _TASK_PRIORITY          // Support for layered scheduling priority
+// #define _TASK_STD_FUNCTION      // Support for std::function (ESP8266 and ESP32 ONLY)
+
+/*
  * INCLUDES
  */
 #include <Arduino.h>
@@ -71,12 +80,23 @@ Sync. with current target RA/Dec          :CM#  Reply: N/A
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-#include <OnTask.h>
+#include <TaskScheduler.h>
+
+/*
+ * TASK SCHEDULER
+ */
+Scheduler ts;
+
+void doDisplay();
+Task tsDisplay ( 500 * TASK_MILLISECOND, TASK_FOREVER, &doDisplay, &ts, true );
+void readPins();
+Task tsInput ( 100 * TASK_MILLISECOND, TASK_FOREVER, &readPins, &ts, true );
+
 
 /*
  * Debug output functionality
  */
-//#define DEBUG
+#define DEBUG
 #define DebugSer Serial
 
 #ifdef DEBUG
@@ -140,6 +160,9 @@ int pinRight_duration = 0;
 unsigned long lastReadout_time = 0;
 unsigned long Readout_time = 0;
 
+//int displayhandle = 0;
+//Tasks tasks = Tasks();
+
 // * * * * * * * * * * * * * * * * * * * * *
 // Command communication with OnStep server
 // * * * * * * * * * * * * * * * * * * * * *
@@ -187,6 +210,7 @@ String processCommand(String cmd){
 // Read button status
 // * * * * * * * * * * * * * * * * * * * * *
 void readPins() {
+  DL("Input...");
   // Save button status from last call
   int pinUp_prevstatus = pinUp_status;
   int pinDown_prevstatus = pinDown_status;
@@ -265,11 +289,11 @@ void readPins() {
   }  
    
   // debug output
-  D("pinUp_status: "); D(pinUp_status); D(" / pressed time: "); DL(pinUp_duration);
+  /*D("pinUp_status: "); D(pinUp_status); D(" / pressed time: "); DL(pinUp_duration);
   D("pinDown_status: "); D(pinDown_status); D(" / pressed time: "); DL(pinDown_duration);
   D("pinSpecial_status: "); D(pinSpecial_status); D(" / pressed time: "); DL(pinSpecial_duration);
   D("pinLeft_status: "); D(pinLeft_status);  D(" / pressed time: "); DL(pinLeft_duration);
-  D("pinRight_status: "); D(pinRight_status); D(" / pressed time: "); DL(pinRight_duration);
+  D("pinRight_status: "); D(pinRight_status); D(" / pressed time: "); DL(pinRight_duration);*/
 
   // clean up and save last button readout time
   lastReadout_time = Readout_time;
@@ -278,7 +302,8 @@ void readPins() {
 // * * * * * * * * * * * * * * * * * * * * *
 // display routines
 // * * * * * * * * * * * * * * * * * * * * *
-void updatedisplay() {
+void doDisplay() {
+  DL("Display...");
   display.clearDisplay();       // Clear the buffer
   display.setTextSize(1);      // Normal 1:1 pixel scale
   display.setTextColor(SSD1306_WHITE); // Draw white text
@@ -328,7 +353,7 @@ void setup() {
   //analogWrite(LED_RED, 1023);
 
 #ifdef DEBUG
-  DebugSer.begin(115200); 
+  DebugSer.begin(9600); 
   delay(5000); 
   DebugSer.flush();
   DL("Starting Wireless Handcontroller...");
@@ -347,6 +372,7 @@ void setup() {
     display.print("Connecting to "); display.print(ssid); display.print("\n");
     display.print(i);
     display.display();
+    yield();
   }
   DL("");
   DL("Connection established!");  
@@ -365,14 +391,15 @@ void setup() {
     // add led blink code in when PCB with leds is available
     display.print(" - OnStep NOT found.");
     display.display();
-    for(;;); // Don't proceed, loop forever
+    for(;;)
+        yield(); // Don't proceed, loop forever
   }
 
   // set first value for readout of buttons, otherwise it is undefined
   lastReadout_time = millis();
 
-  // wait for 3s, then continue
-  delay(3000);
+  // wait, then continue
+  delay(1000);
 
   // clear display
   display.clearDisplay();
@@ -389,7 +416,7 @@ void loop() {
   unsigned long start_time = millis();
   
   // poll state for all buttons
-  readPins();
+  //readPins();
 
   /*
    * Action:  Move Focus Inward
@@ -434,7 +461,7 @@ void loop() {
    */
   if (pinUp_status == 0 && pinDown_status == 0 && pinSpecial_status == 1){
     delay(1000); // only issue command if button is pressed for more than one second
-      readPins();
+    readPins();
     if (pinUp_status == 0 && pinDown_status == 0 && pinSpecial_status == 1){
       cmd = ":FH#";
       cmd_result = processCommand(cmd);
@@ -455,13 +482,15 @@ void loop() {
   /*
    * update OLED display
    */
-  updatedisplay();
+  //doDisplay();
+  DL("Running scheduler...");
+  ts.execute();
 
   // ensure constant execution time (not needed now that button state has duration associated)
-  unsigned long end_time = millis();
+  /*unsigned long end_time = millis();
   unsigned long run_time = end_time - start_time;
   if ( run_time < 250) {
     D("Loop time: " + String(run_time) + "ms");
     delay(250-run_time);
-  }
+  }*/
 }
