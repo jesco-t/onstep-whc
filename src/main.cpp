@@ -86,11 +86,14 @@ Sync. with current target RA/Dec          :CM#  Reply: N/A
  * TASK SCHEDULER
  */
 Scheduler ts;
+bool InputIsProcessed = false;
 
-void doDisplay();
-Task tsDisplay ( 500 * TASK_MILLISECOND, TASK_FOREVER, &doDisplay, &ts, true );
-void readPins();
-Task tsInput ( 100 * TASK_MILLISECOND, TASK_FOREVER, &readPins, &ts, true );
+void updateUI();
+Task tsDisplay ( 500 * TASK_MILLISECOND, TASK_FOREVER, &updateUI, &ts, true );
+void readInput();
+Task tsInput ( 100 * TASK_MILLISECOND, TASK_FOREVER, &readInput, &ts, true );
+void processInput();
+Task tsProcess ( 333 * TASK_MILLISECOND, TASK_FOREVER, &processInput, &ts, true );
 
 
 /*
@@ -209,7 +212,7 @@ String processCommand(String cmd){
 // * * * * * * * * * * * * * * * * * * * * *
 // Read button status
 // * * * * * * * * * * * * * * * * * * * * *
-void readPins() {
+void readInput() {
   DL("Input...");
   // Save button status from last call
   int pinUp_prevstatus = pinUp_status;
@@ -218,7 +221,8 @@ void readPins() {
   int pinLeft_prevstatus = pinLeft_status;
   int pinRight_prevstatus = pinRight_status;
 
-  // save current time as helper to determine how long buttons are pushed (consider first run of this function when lastReadout_time is 0)
+  // save current time as helper to determine how long buttons are pushed 
+  //(consider first run of this function when lastReadout_time is 0)
   Readout_time = millis();
   if (lastReadout_time == 0) {
     lastReadout_time = Readout_time;
@@ -232,6 +236,9 @@ void readPins() {
   pinRight_status = digitalRead(PIN_RIGHT);
 
   // Determine push time, if button was previously pushed
+  if (pinUp_status == 0 && pinUp_prevstatus == 1 && InputIsProcessed == false){
+    pinUp_status = 1;
+  }
   if (pinUp_status == 1) {
     // code for button previously pushed
     if (pinUp_prevstatus == 1) {
@@ -242,6 +249,10 @@ void readPins() {
   }
   else {
     pinUp_duration = 0;
+  }
+
+  if (pinDown_status == 0 && pinDown_prevstatus == 1 && InputIsProcessed == false){
+    pinDown_status = 1;
   }
   if (pinDown_status == 1) {
     // code for button previously pushed
@@ -254,6 +265,10 @@ void readPins() {
   else {
     pinDown_duration = 0;
   }
+
+  if (pinLeft_status == 0 && pinLeft_prevstatus == 1 && InputIsProcessed == false){
+    pinLeft_status = 1;
+  }
   if (pinLeft_status == 1) {
     // code for button previously pushed
     if (pinLeft_prevstatus == 1) {
@@ -264,6 +279,10 @@ void readPins() {
   }
   else {
     pinLeft_duration = 0;
+  }
+
+  if (pinRight_status == 0 && pinRight_prevstatus == 1 && InputIsProcessed == false){
+    pinRight_status = 1;
   }
   if (pinRight_status == 1) {
     // code for button previously pushed
@@ -276,6 +295,10 @@ void readPins() {
   else {
     pinRight_duration = 0;
   } 
+
+  if (pinSpecial_status == 0 && pinSpecial_prevstatus == 1 && InputIsProcessed == false){
+    pinSpecial_status = 1;
+  }
   if (pinSpecial_status == 1) {
     // code for button previously pushed
     if (pinSpecial_prevstatus == 1) {
@@ -297,13 +320,16 @@ void readPins() {
 
   // clean up and save last button readout time
   lastReadout_time = Readout_time;
+  if (InputIsProcessed == true){
+    InputIsProcessed = false;
+  }
 }
 
 // * * * * * * * * * * * * * * * * * * * * *
 // display routines
 // * * * * * * * * * * * * * * * * * * * * *
-void doDisplay() {
-  DL("Display...");
+void updateUI() {
+  DL("User Interface...");
   display.clearDisplay();       // Clear the buffer
   display.setTextSize(1);      // Normal 1:1 pixel scale
   display.setTextColor(SSD1306_WHITE); // Draw white text
@@ -320,6 +346,65 @@ void doDisplay() {
   display.print("D "); display.print(DE); display.print("\n");
   display.print("F "); display.print(FO);
   display.display();
+}
+
+void processInput(){
+  String cmd;
+  String cmd_result;
+
+  /*
+   * Action:  Move Focus Inward
+   * Trigger: UP Button
+   */
+  if (pinUp_status == 1 && pinDown_status == 0 && pinSpecial_status == 0){
+    cmd = ":FR" + String(focus_slowspeed);
+    if (pinUp_duration > focus_switchtime ) {
+      cmd = ":FR" + String(focus_fastspeed);
+    }
+    cmd = cmd + "#";
+    DL(cmd);
+    cmd_result = processCommand(cmd);
+  }
+  
+  /*
+   * Action:  Move Focus Outward
+   * Trigger: DOWN Button
+   */
+  if (pinUp_status == 0 && pinDown_status == 1 && pinSpecial_status == 0){
+    cmd = ":FR-" + String(focus_slowspeed);
+    if (pinDown_duration > focus_switchtime ) {
+      cmd = ":FR-" + String(focus_fastspeed);
+    }
+    cmd = cmd + "#";
+    DL(cmd);
+    cmd_result = processCommand(cmd);
+  }
+
+  // HERE COME NOT IMPLEMENTED COMMANDS
+  
+  /*
+   * set current focuser position as new home
+   */
+  if (pinUp_status == 0 && pinDown_status == 0 && pinSpecial_status == 1){
+    delay(1000); // only issue command if button is pressed for more than one second
+    readInput();
+    if (pinUp_status == 0 && pinDown_status == 0 && pinSpecial_status == 1){
+      cmd = ":FH#";
+      cmd_result = processCommand(cmd);
+    }
+  }
+  /*
+   * move focuser to home position
+   */
+  if (pinUp_status == 1 && pinDown_status == 1 && pinSpecial_status == 0){
+    delay(1000); // only issue command if button is pressed for more than one second
+      readInput();
+    if (pinUp_status == 1 && pinDown_status == 1 && pinSpecial_status == 0){
+      cmd = ":Fh#";
+      cmd_result = processCommand(cmd);
+    }
+  }
+  InputIsProcessed = true;
 }
 
 // * * * * * * * * * * * * * * * * * * * * *
@@ -409,88 +494,9 @@ void setup() {
 // main program loop
 // * * * * * * * * * * * * * * * * * * * * *
 void loop() {
-  String cmd;
-  String cmd_result;
-
-  // get start time for loop
-  unsigned long start_time = millis();
-  
-  // poll state for all buttons
-  //readPins();
-
   /*
-   * Action:  Move Focus Inward
-   * Trigger: UP Button
+   * run scheduler
    */
-  if (pinUp_status == 1 && pinDown_status == 0 && pinSpecial_status == 0){
-    //while (pinUp_status == 1 && pinDown_status == 0 && pinSpecial_status == 0){
-      cmd = ":FR" + String(focus_slowspeed);
-      if (pinUp_duration > focus_switchtime ) {
-        cmd = ":FR" + String(focus_fastspeed);
-      }
-      cmd = cmd + "#";
-      DL(cmd);
-      cmd_result = processCommand(cmd);
-      delay(focus_delay);
-      readPins();
-    //}
-  }
-  
-  /*
-   * Action:  Move Focus Outward
-   * Trigger: DOWN Button
-   */
-  if (pinUp_status == 0 && pinDown_status == 1 && pinSpecial_status == 0){
-    //while (pinUp_status == 0 && pinDown_status == 1 && pinSpecial_status == 0){
-      cmd = ":FR-" + String(focus_slowspeed);
-      if (pinDown_duration > focus_switchtime ) {
-        cmd = ":FR-" + String(focus_fastspeed);
-      }
-      cmd = cmd + "#";
-      DL(cmd);
-      cmd_result = processCommand(cmd);
-      delay(focus_delay);
-      readPins();
-    //}
-  }
-
-  // HERE COME NOT IMPLEMENTED COMMANDS
-  
-  /*
-   * set current focuser position as new home
-   */
-  if (pinUp_status == 0 && pinDown_status == 0 && pinSpecial_status == 1){
-    delay(1000); // only issue command if button is pressed for more than one second
-    readPins();
-    if (pinUp_status == 0 && pinDown_status == 0 && pinSpecial_status == 1){
-      cmd = ":FH#";
-      cmd_result = processCommand(cmd);
-    }
-  }
-  /*
-   * move focuser to home position
-   */
-  if (pinUp_status == 1 && pinDown_status == 1 && pinSpecial_status == 0){
-    delay(1000); // only issue command if button is pressed for more than one second
-      readPins();
-    if (pinUp_status == 1 && pinDown_status == 1 && pinSpecial_status == 0){
-      cmd = ":Fh#";
-      cmd_result = processCommand(cmd);
-    }
-  }
-
-  /*
-   * update OLED display
-   */
-  //doDisplay();
   DL("Running scheduler...");
   ts.execute();
-
-  // ensure constant execution time (not needed now that button state has duration associated)
-  /*unsigned long end_time = millis();
-  unsigned long run_time = end_time - start_time;
-  if ( run_time < 250) {
-    D("Loop time: " + String(run_time) + "ms");
-    delay(250-run_time);
-  }*/
 }
