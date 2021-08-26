@@ -3,3 +3,10 @@
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 .vscode/ipch
+pcb/fhc-pcb.kicad_pcb-bak
+pcb/fhc-pcb.sch-bak
+files/fhc-pcb.kicad_pcb-bak
+files/fhc-pcb.sch-bak
+*.bck
+files/fp-info-cache
+files/fp-info-cache
