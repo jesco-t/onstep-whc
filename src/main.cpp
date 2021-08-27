@@ -119,6 +119,9 @@ int pinRight_duration = 0;
 unsigned long lastReadout_time = 0;
 unsigned long Readout_time = 0;
 
+/* Operation Modes ("F" or "S") */
+String OpMode = "F";
+
 // * * * * * * * * * * * * * * * * * * * * *
 // Command communication with OnStep server
 // * * * * * * * * * * * * * * * * * * * * *
@@ -273,11 +276,11 @@ void readInput() {
   #endif
    
   // debug output
-  /*D("pinUp_status: "); D(pinUp_status); D(" / pressed time: "); DL(pinUp_duration);
+  D("pinUp_status: "); D(pinUp_status); D(" / pressed time: "); DL(pinUp_duration);
   D("pinDown_status: "); D(pinDown_status); D(" / pressed time: "); DL(pinDown_duration);
   D("pinSpecial_status: "); D(pinSpecial_status); D(" / pressed time: "); DL(pinSpecial_duration);
   D("pinLeft_status: "); D(pinLeft_status);  D(" / pressed time: "); DL(pinLeft_duration);
-  D("pinRight_status: "); D(pinRight_status); D(" / pressed time: "); DL(pinRight_duration);*/
+  D("pinRight_status: "); D(pinRight_status); D(" / pressed time: "); DL(pinRight_duration);
 
   // clean up and save last button readout time
   lastReadout_time = Readout_time;
@@ -315,58 +318,84 @@ void processInput(){
   String cmd_result;
 
   /*
-   * Action:  Move Focus Inward
-   * Trigger: UP Button
+   * Focuser Mode
    */
-  if (pinUp_status == 1 && pinDown_status == 0){
-    cmd = ":FR" + String(focus_slowspeed);
-    if (pinUp_duration > focus_switchtime ) {
-      cmd = ":FR" + String(focus_fastspeed);
+  if( OpMode == "F") {
+    /*
+     * Action:  Move Focus Inward
+     * Trigger: UP Button
+     */
+    if (pinUp_status == 1 && pinDown_status == 0){
+    
+      if (pinUp_duration > focus_switchtime ) {
+        cmd = ":FR" + String(focus_fastspeed) + "#";
+        cmd_result = processCommand(cmd);
+      } else {
+        cmd = ":FR" + String(focus_slowspeed) + "#";
+        cmd_result = processCommand(cmd);
+      }
     }
-    cmd = cmd + "#";
-    DL(cmd);
-    cmd_result = processCommand(cmd);
-  }
   
-  /*
-   * Action:  Move Focus Outward
-   * Trigger: DOWN Button
-   */
-  if (pinUp_status == 0 && pinDown_status == 1){
-    cmd = ":FR-" + String(focus_slowspeed);
-    if (pinDown_duration > focus_switchtime ) {
-      cmd = ":FR-" + String(focus_fastspeed);
+    /*
+     * Action:  Move Focus Outward
+     * Trigger: DOWN Button
+     */
+    if (pinUp_status == 0 && pinDown_status == 1){
+      if (pinDown_duration > focus_switchtime ) {
+        cmd = ":FR-" + String(focus_fastspeed) + "#";
+        cmd_result = processCommand(cmd);
+      } else {
+        cmd = ":FR-" + String(focus_slowspeed) + "#";
+        cmd_result = processCommand(cmd);
+      }    
     }
-    cmd = cmd + "#";
-    DL(cmd);
-    cmd_result = processCommand(cmd);
-  }
 
-  // HERE COME NOT IMPLEMENTED COMMANDS
-  
-  /*
-   * set current focuser position as new home
-   */
-  /*if (pinUp_status == 0 && pinDown_status == 0){
-    delay(1000); // only issue command if button is pressed for more than one second
-    readInput();
-    if (pinUp_status == 0 && pinDown_status == 0){
-      cmd = ":FH#";
-      cmd_result = processCommand(cmd);
-    }
-  }*/
-  /*
-   * move focuser to home position
-   */
-  /*if (pinUp_status == 1 && pinDown_status == 1){
-    delay(1000); // only issue command if button is pressed for more than one second
-      readInput();
+    /*
+     * ACTION: set current focuser position as new home
+     * TRIGGER: UP and DOWN Buttons pressed for more than 1s
+     */
     if (pinUp_status == 1 && pinDown_status == 1){
-      cmd = ":Fh#";
-      cmd_result = processCommand(cmd);
+      if (pinUp_duration > 1000 && pinDown_duration > 1000){
+        cmd_result = processCommand(":FH#");
+      }
     }
-  }*/
-  InputIsProcessed = true;
+
+    /*
+     * ACTION: move focuser to home position
+     * TRIGGER: LEFT and RIGHT Buttons pressed for more than 1s
+     */
+    if (pinLeft_status == 1 && pinRight_status == 1){
+      if (pinLeft_duration > 1000 && pinRight_duration > 1000){
+        cmd_result = processCommand(":Fh#");
+      }
+    }
+
+    /*
+     * ACTION: change to scope control mode
+     * TRIGGER: UP and RIGHT Buttons pressed for more than 1s
+     */
+    if (pinUp_status == 1 && pinRight_status == 1){
+      if (pinUp_duration > 1000 && pinRight_duration > 1000){
+        OpMode = "S";
+      }
+    }
+    InputIsProcessed = true;
+  }
+  /*
+   * Focuser Mode
+   */
+  if( OpMode == "S" && InputIsProcessed == false) {
+    /*
+     * ACTION: change to focus control mode
+     * TRIGGER: DOWN and LEFT Buttons pressed for more than 1s
+     */
+    if (pinDown_status == 1 && pinLeft_status == 1){
+      if (pinDown_duration > 1000 && pinLeft_duration > 1000){
+        OpMode = "F";
+      }
+    }
+    InputIsProcessed = true;
+  }
 }
 
 // * * * * * * * * * * * * * * * * * * * * *
