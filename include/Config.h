@@ -13,3 +13,6 @@ int focus_slowspeed = 25;       // slow speed step size
 int focus_fastspeed = 250;      // fast speed step size
 int focus_switchtime = 3000;    // time after switch speed is switched to fast
 int focus_delay = 100;
+
+/* Disable special pin due to R2 PCB design issue */
+#define DISABLE_SPECIAL

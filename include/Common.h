@@ -12,7 +12,6 @@
 /*
  * DEBUGGING via SERIAL MONITOR
  */
-#define DEBUG
 #define DebugSer Serial
 
 #ifdef DEBUG

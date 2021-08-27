@@ -81,6 +81,7 @@ void char2DEC(char* txt, int& deg, unsigned int& min, unsigned int& sec) {
 /*
  * INCLUDE COMMON HEADERS AND DEFINITIONS
  */
+//#define DEBUG
 #include "Common.h"
 #include "Config.h"
 
@@ -105,12 +106,14 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 /* Initialize states for buttons */
 int pinUp_status = 0;
 int pinDown_status = 0;
-int pinSpecial_status = 0;
 int pinLeft_status = 0;
 int pinRight_status = 0;
 int pinUp_duration = 0;
 int pinDown_duration = 0;
-int pinSpecial_duration = 0;
+#ifndef DISABLE_SPECIAL 
+int pinSpecial_duration = 0; 
+int pinSpecial_status = 0; 
+#endif
 int pinLeft_duration = 0;
 int pinRight_duration = 0;
 unsigned long lastReadout_time = 0;
@@ -167,7 +170,9 @@ void readInput() {
   // Save button status from last call
   int pinUp_prevstatus = pinUp_status;
   int pinDown_prevstatus = pinDown_status;
-  int pinSpecial_prevstatus = pinSpecial_status;
+#ifndef DISABLE_SPECIAL 
+  int pinSpecial_prevstatus = pinSpecial_status; 
+#endif
   int pinLeft_prevstatus = pinLeft_status;
   int pinRight_prevstatus = pinRight_status;
 
@@ -181,7 +186,9 @@ void readInput() {
   // read buttons
   pinUp_status = digitalRead(PIN_UP);
   pinDown_status = digitalRead(PIN_DOWN);
-  pinSpecial_status = digitalRead(PIN_SPECIAL);
+#ifndef DISABLE_SPECIAL 
+  pinSpecial_status = digitalRead(PIN_SPECIAL); 
+#endif
   pinLeft_status = digitalRead(PIN_LEFT);
   pinRight_status = digitalRead(PIN_RIGHT);
 
@@ -190,6 +197,7 @@ void readInput() {
     pinUp_status = 1;
   }
   if (pinUp_status == 1) {
+    display.print("U");
     // code for button previously pushed
     if (pinUp_prevstatus == 1) {
       pinUp_duration = pinUp_duration + (Readout_time - lastReadout_time);
@@ -246,10 +254,12 @@ void readInput() {
     pinRight_duration = 0;
   } 
 
+  #ifndef DISABLE_SPECIAL
   if (pinSpecial_status == 0 && pinSpecial_prevstatus == 1 && InputIsProcessed == false){
     pinSpecial_status = 1;
   }
   if (pinSpecial_status == 1) {
+    display.print("S");
     // code for button previously pushed
     if (pinSpecial_prevstatus == 1) {
       pinSpecial_duration = pinSpecial_duration + (Readout_time - lastReadout_time);
@@ -259,7 +269,8 @@ void readInput() {
   }
   else {
     pinSpecial_duration = 0;
-  }  
+  }
+  #endif
    
   // debug output
   /*D("pinUp_status: "); D(pinUp_status); D(" / pressed time: "); DL(pinUp_duration);
@@ -295,6 +306,7 @@ void updateUI() {
   display.print("R "); display.print(RA); display.print("\n");
   display.print("D "); display.print(DE); display.print("\n");
   display.print("F "); display.print(FO);
+  //display.print("Buttons "); display.print(pinUp_status); display.print(pinDown_status); display.print(pinLeft_status); display.print(pinRight_status); display.print(pinSpecial_status);
   display.display();
 }
 
@@ -306,7 +318,7 @@ void processInput(){
    * Action:  Move Focus Inward
    * Trigger: UP Button
    */
-  if (pinUp_status == 1 && pinDown_status == 0 && pinSpecial_status == 0){
+  if (pinUp_status == 1 && pinDown_status == 0){
     cmd = ":FR" + String(focus_slowspeed);
     if (pinUp_duration > focus_switchtime ) {
       cmd = ":FR" + String(focus_fastspeed);
@@ -320,7 +332,7 @@ void processInput(){
    * Action:  Move Focus Outward
    * Trigger: DOWN Button
    */
-  if (pinUp_status == 0 && pinDown_status == 1 && pinSpecial_status == 0){
+  if (pinUp_status == 0 && pinDown_status == 1){
     cmd = ":FR-" + String(focus_slowspeed);
     if (pinDown_duration > focus_switchtime ) {
       cmd = ":FR-" + String(focus_fastspeed);
@@ -335,25 +347,25 @@ void processInput(){
   /*
    * set current focuser position as new home
    */
-  if (pinUp_status == 0 && pinDown_status == 0 && pinSpecial_status == 1){
+  /*if (pinUp_status == 0 && pinDown_status == 0){
     delay(1000); // only issue command if button is pressed for more than one second
     readInput();
-    if (pinUp_status == 0 && pinDown_status == 0 && pinSpecial_status == 1){
+    if (pinUp_status == 0 && pinDown_status == 0){
       cmd = ":FH#";
       cmd_result = processCommand(cmd);
     }
-  }
+  }*/
   /*
    * move focuser to home position
    */
-  if (pinUp_status == 1 && pinDown_status == 1 && pinSpecial_status == 0){
+  /*if (pinUp_status == 1 && pinDown_status == 1){
     delay(1000); // only issue command if button is pressed for more than one second
       readInput();
-    if (pinUp_status == 1 && pinDown_status == 1 && pinSpecial_status == 0){
+    if (pinUp_status == 1 && pinDown_status == 1){
       cmd = ":Fh#";
       cmd_result = processCommand(cmd);
     }
-  }
+  }*/
   InputIsProcessed = true;
 }
 
