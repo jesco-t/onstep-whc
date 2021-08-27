@@ -382,7 +382,7 @@ void processInput(){
     InputIsProcessed = true;
   }
   /*
-   * Focuser Mode
+   * Scope Mode
    */
   if( OpMode == "S" && InputIsProcessed == false) {
     /*
