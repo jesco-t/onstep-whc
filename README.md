@@ -33,4 +33,8 @@ Bad
 # Commands
 * Focus Inward = Upper Button
 * Focus Outward = Lower Button
+* Set Focuser Home = Up and Bown Buttons for > 1s
+* Move Focuser Home = Left and Right Buttons for > 1s
+* Switch to Scope Mode = Up and Right Buttons for > 1s
+* Switch to Focus Mode = Down and Left Buttons for > 1s
 
