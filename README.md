@@ -28,7 +28,6 @@ Good
 
 Bad
 * No mount control yet
-* No display output yet
 
 # Commands
 * Focus Inward = Upper Button
