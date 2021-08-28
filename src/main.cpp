@@ -310,6 +310,9 @@ void updateUI() {
   display.print("D "); display.print(DE); display.print("\n");
   display.print("F "); display.print(FO);
   //display.print("Buttons "); display.print(pinUp_status); display.print(pinDown_status); display.print(pinLeft_status); display.print(pinRight_status); display.print(pinSpecial_status);
+  
+  // ToDo: add code to display OpMode
+  
   display.display();
 }
 
@@ -393,6 +396,22 @@ void processInput(){
       if (pinDown_duration > 1000 && pinLeft_duration > 1000){
         OpMode = "F";
       }
+    }
+    /*
+     * ACTION: move scope north/south/west/east
+     * TRIGGER: UP, DOWN, LEFT, RIGHT Buttons
+     */
+    if (pinUp_status == 1){
+      cmd_result = processCommand(":Mn#");
+    }
+    if (pinDown_status == 1){
+      cmd_result = processCommand(":Ms#");
+    }
+    if (pinLeft_status == 1){
+      cmd_result = processCommand(":Mw#");
+    }
+    if (pinRight_status == 1){
+      cmd_result = processCommand(":Me#");
     }
     InputIsProcessed = true;
   }
@@ -479,6 +498,9 @@ void setup() {
 
   // clear display
   display.clearDisplay();
+
+  // enable tracking
+  processCommand(":Te#");
 }
 
 // * * * * * * * * * * * * * * * * * * * * *
