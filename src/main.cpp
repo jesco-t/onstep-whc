@@ -311,7 +311,14 @@ void updateUI() {
   display.print("F "); display.print(FO);
   //display.print("Buttons "); display.print(pinUp_status); display.print(pinDown_status); display.print(pinLeft_status); display.print(pinRight_status); display.print(pinSpecial_status);
   
-  // ToDo: add code to display OpMode
+  // display OpMode
+  display.setCursor(96, 0);
+  if (OpMode == "F") {
+    display.print("FOCUS");
+  }
+  if (OpMode == "S") {
+    display.print("SCOPE");
+  }
   
   display.display();
 }
@@ -378,7 +385,7 @@ void processInput(){
      * TRIGGER: UP and RIGHT Buttons pressed for more than 1s
      */
     if (pinUp_status == 1 && pinRight_status == 1){
-      if (pinUp_duration > 1000 && pinRight_duration > 1000){
+      if (pinUp_duration > 500 && pinRight_duration > 500){
         OpMode = "S";
       }
     }
@@ -393,7 +400,7 @@ void processInput(){
      * TRIGGER: DOWN and LEFT Buttons pressed for more than 1s
      */
     if (pinDown_status == 1 && pinLeft_status == 1){
-      if (pinDown_duration > 1000 && pinLeft_duration > 1000){
+      if (pinDown_duration > 500 && pinLeft_duration > 500){
         OpMode = "F";
       }
     }
