@@ -81,7 +81,7 @@ void char2DEC(char* txt, int& deg, unsigned int& min, unsigned int& sec) {
 /*
  * INCLUDE COMMON HEADERS AND DEFINITIONS
  */
-//#define DEBUG
+#define DEBUG
 #include "Common.h"
 #include "Config.h"
 
@@ -116,6 +116,8 @@ int pinSpecial_status = 0;
 #endif
 int pinLeft_duration = 0;
 int pinRight_duration = 0;
+String pin_status = "00000"; // North East South West Special
+String pin_prevstatus = "00000";
 unsigned long lastReadout_time = 0;
 unsigned long Readout_time = 0;
 
@@ -127,18 +129,18 @@ String OpMode = "F";
 // * * * * * * * * * * * * * * * * * * * * *
 String processCommand(String cmd){
   // Debugging output
-  D("Command: "); D(cmd); D(" - ");
+  //D("Command: "); D(cmd); D(" - ");
   
   // Connect to cmdSvr
   if (!cmdSvrClient.connect(onstep, 9999)) {
-    DL("connection failed");
+    //DL("connection failed");
     delay(1000);
     return "NO_CONNECTION";
   }
   // Send command
   if (cmdSvrClient.connected()) {
     cmdSvrClient.println(cmd);
-    D(cmd); DL(" successfully sent - ");
+    //D(cmd); DL(" successfully sent - ");
   } 
   // wait for data return to be available
   /*unsigned long timeout = millis();
@@ -155,12 +157,12 @@ String processCommand(String cmd){
   String data_return = "";
     while (cmdSvrClient.available()) {
     char ch = static_cast<char>(cmdSvrClient.read());
-    D(ch);
+    //D(ch);
     data_return += ch;
   }
   // Close the connection
   cmdSvrClient.stop();
-  DL();
+  //DL();
 
   return data_return;
 }
@@ -170,14 +172,6 @@ String processCommand(String cmd){
 // * * * * * * * * * * * * * * * * * * * * *
 void readInput() {
   DL("Input...");
-  // Save button status from last call
-  int pinUp_prevstatus = pinUp_status;
-  int pinDown_prevstatus = pinDown_status;
-#ifndef DISABLE_SPECIAL 
-  int pinSpecial_prevstatus = pinSpecial_status; 
-#endif
-  int pinLeft_prevstatus = pinLeft_status;
-  int pinRight_prevstatus = pinRight_status;
 
   // save current time as helper to determine how long buttons are pushed 
   //(consider first run of this function when lastReadout_time is 0)
@@ -186,107 +180,59 @@ void readInput() {
     lastReadout_time = Readout_time;
   }
 
-  // read buttons
-  pinUp_status = digitalRead(PIN_UP);
-  pinDown_status = digitalRead(PIN_DOWN);
-#ifndef DISABLE_SPECIAL 
-  pinSpecial_status = digitalRead(PIN_SPECIAL); 
+  // read buttons (alow change of state only if previous button input has been processed)
+  pin_prevstatus = pin_status;
+  if (InputIsProcessed == true) {
+    pin_status = String(max(digitalRead(PIN_UP),0));
+    pin_status += String(max(digitalRead(PIN_RIGHT),0));
+    pin_status += String(max(digitalRead(PIN_DOWN),0));
+    pin_status += String(max(digitalRead(PIN_LEFT),0));
+#ifndef DISABLE_SPECIAL
+    pin_status += String(max(digitalRead(PIN_SPECIAL),0));
 #endif
-  pinLeft_status = digitalRead(PIN_LEFT);
-  pinRight_status = digitalRead(PIN_RIGHT);
+  } else {
+    pin_status = String(max(digitalRead(PIN_UP),atoi(&pin_prevstatus[0])));
+    pin_status += String(max(digitalRead(PIN_RIGHT),atoi(&pin_prevstatus[1])));
+    pin_status += String(max(digitalRead(PIN_DOWN),atoi(&pin_prevstatus[2])));
+    pin_status += String(max(digitalRead(PIN_LEFT),atoi(&pin_prevstatus[3])));
+#ifndef DISABLE_SPECIAL
+    pin_status += String(max(digitalRead(PIN_SPECIAL),atoi(&pin_prevstatus[4])));
+#endif
+  }
 
   // Determine push time, if button was previously pushed
-  if (pinUp_status == 0 && pinUp_prevstatus == 1 && InputIsProcessed == false){
-    pinUp_status = 1;
-  }
-  if (pinUp_status == 1) {
-    display.print("U");
-    // code for button previously pushed
-    if (pinUp_prevstatus == 1) {
-      pinUp_duration = pinUp_duration + (Readout_time - lastReadout_time);
-    } else {
-      pinUp_duration = 0;
-    }
-  }
-  else {
+  if (String(pin_status[0]).toInt() == 1 && String(pin_prevstatus[0]).toInt() == 1) {
+    pinUp_duration = pinUp_duration + (Readout_time - lastReadout_time);
+  } else {
     pinUp_duration = 0;
   }
-
-  if (pinDown_status == 0 && pinDown_prevstatus == 1 && InputIsProcessed == false){
-    pinDown_status = 1;
+  if (String(pin_status[1]).toInt() == 1 && String(pin_prevstatus[1]).toInt() == 1) {
+    pinRight_duration = pinRight_duration + (Readout_time - lastReadout_time);
+  } else {
+    pinRight_duration = 0;
   }
-  if (pinDown_status == 1) {
-    // code for button previously pushed
-    if (pinDown_prevstatus == 1) {
-      pinDown_duration = pinDown_duration + (Readout_time - lastReadout_time);
-    } else {
-      pinDown_duration = 0;
-    }
-  }
-  else {
+  if (String(pin_status[2]).toInt() == 1 && String(pin_prevstatus[2]).toInt() == 1) {
+    pinDown_duration = pinDown_duration + (Readout_time - lastReadout_time);
+  } else {
     pinDown_duration = 0;
   }
-
-  if (pinLeft_status == 0 && pinLeft_prevstatus == 1 && InputIsProcessed == false){
-    pinLeft_status = 1;
-  }
-  if (pinLeft_status == 1) {
-    // code for button previously pushed
-    if (pinLeft_prevstatus == 1) {
-      pinLeft_duration = pinLeft_duration + (Readout_time - lastReadout_time);
-    } else {
-      pinLeft_duration = 0;
-    }
-  }
-  else {
+  if (String(pin_status[3]).toInt() == 1 && String(pin_prevstatus[3]).toInt() == 1) {
+    pinLeft_duration = pinLeft_duration + (Readout_time - lastReadout_time);
+  } else {
     pinLeft_duration = 0;
   }
-
-  if (pinRight_status == 0 && pinRight_prevstatus == 1 && InputIsProcessed == false){
-    pinRight_status = 1;
-  }
-  if (pinRight_status == 1) {
-    // code for button previously pushed
-    if (pinRight_prevstatus == 1) {
-      pinRight_duration = pinRight_duration + (Readout_time - lastReadout_time);
-    } else {
-      pinRight_duration = 0;
-    }
-  }
-  else {
-    pinRight_duration = 0;
-  } 
-
+ 
   #ifndef DISABLE_SPECIAL
-  if (pinSpecial_status == 0 && pinSpecial_prevstatus == 1 && InputIsProcessed == false){
-    pinSpecial_status = 1;
-  }
-  if (pinSpecial_status == 1) {
-    display.print("S");
-    // code for button previously pushed
-    if (pinSpecial_prevstatus == 1) {
-      pinSpecial_duration = pinSpecial_duration + (Readout_time - lastReadout_time);
-    } else {
-      pinSpecial_duration = 0;
-    }
-  }
-  else {
+  if (String(pin_status[4]).toInt() == 1 && String(pin_prevstatus[4]) == 1) {
+    pinSpecial_duration = pinSpecial_duration + (Readout_time - lastReadout_time);
+  } else {
     pinSpecial_duration = 0;
   }
   #endif
-   
-  // debug output
-  D("pinUp_status: "); D(pinUp_status); D(" / pressed time: "); DL(pinUp_duration);
-  D("pinDown_status: "); D(pinDown_status); D(" / pressed time: "); DL(pinDown_duration);
-  D("pinSpecial_status: "); D(pinSpecial_status); D(" / pressed time: "); DL(pinSpecial_duration);
-  D("pinLeft_status: "); D(pinLeft_status);  D(" / pressed time: "); DL(pinLeft_duration);
-  D("pinRight_status: "); D(pinRight_status); D(" / pressed time: "); DL(pinRight_duration);
 
   // clean up and save last button readout time
   lastReadout_time = Readout_time;
-  if (InputIsProcessed == true){
-    InputIsProcessed = false;
-  }
+  InputIsProcessed = false;
 }
 
 // * * * * * * * * * * * * * * * * * * * * *
@@ -309,7 +255,7 @@ void updateUI() {
   display.print("R "); display.print(RA); display.print("\n");
   display.print("D "); display.print(DE); display.print("\n");
   display.print("F "); display.print(FO);
-  //display.print("Buttons "); display.print(pinUp_status); display.print(pinDown_status); display.print(pinLeft_status); display.print(pinRight_status); display.print(pinSpecial_status);
+  //display.print("Buttons "); display.print(pinUp_status); display.print(pinDown_status); display.print(pinLeft_status); display.print(pinRight_status);
   
   // display OpMode
   display.setCursor(96, 0);
@@ -324,8 +270,15 @@ void updateUI() {
 }
 
 void processInput(){
+  DL("Processing...");
   String cmd;
   String cmd_result;
+
+  // temporary conversion of button state to old format
+  pinUp_status = String(pin_status[0]).toInt();
+  pinRight_status = String(pin_status[1]).toInt();
+  pinDown_status = String(pin_status[2]).toInt();
+  pinLeft_status = String(pin_status[3]).toInt();
 
   /*
    * Focuser Mode
@@ -389,7 +342,6 @@ void processInput(){
         OpMode = "S";
       }
     }
-    InputIsProcessed = true;
   }
   /*
    * Scope Mode
@@ -420,8 +372,8 @@ void processInput(){
     if (pinRight_status == 1){
       cmd_result = processCommand(":Me#");
     }
-    InputIsProcessed = true;
   }
+  InputIsProcessed = true;
 }
 
 // * * * * * * * * * * * * * * * * * * * * *
